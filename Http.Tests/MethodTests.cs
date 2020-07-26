@@ -7,7 +7,6 @@
 #endregion
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Http;
 
 namespace Http.Tests
 {
