@@ -1,0 +1,17 @@
+language: csharp
+
+mono: none
+dotnet: 3.1
+
+git:
+    depth: 1
+
+branches:
+    only:
+        - master
+
+jobs:
+    include:
+        - stage: Test
+          script: dotnet test Http.Tests
+          name: "Run Http.Tests unit tests"
