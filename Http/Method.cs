@@ -148,19 +148,11 @@ namespace Http
         /// <summary>
         /// This property returns the HttpMethod object encoded into a string.
         /// </summary>
-        /// <remarks>If the HttpMethod is invalid this property will return "INVALID" string.</remarks>
-        public Method(string encodedMethod, Type methodType)
-        {
-            this.EncodedMethod = encodedMethod;
-                this.MethodType = methodType;
-
-        }
-                public string EncodedMethod { get; }
+        public string EncodedMethod { get; }
 
         /// <summary>
-        /// This method returns an enum value which represents the HttpMethod object.
+        /// This property value represents the Method object.
         /// </summary>
-        /// <remarks>If the HttpMethod is invalid this property will return INVALID enum value.</remarks>
         public Type MethodType { get; }
 
         /// <summary>
