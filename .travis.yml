@@ -10,6 +10,11 @@ branches:
     only:
         - master
 
+before_install:
+    - git clone --depth 1 --no-tags https://github.com/nathiss/Uri.git Uri
+    - dotnet remove Http/Http.csproj reference ../../Uri/Uri/Uri.csproj
+    - dotnet add Http/Http.csproj reference Uri/Uri/Uri.csproj
+
 jobs:
     include:
         - stage: Test
