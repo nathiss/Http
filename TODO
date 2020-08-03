@@ -1,8 +1,39 @@
 
+Bug log:
+    According to the documentation (namely section 3.1.1 of RFC 7230) the request method is case-sensitive.
+    ☐ Fix a bug inside Http.Method class that causes to compare the given method name to the names of valid HTTP methods in case-insensitive manner.
+
 General:
-  ☐ Read RFC 7230 @started(20-08-02 21:33)
-  ☐ Implement Status Codes general functionality
+    HTTP Message:
+        Start Line & Header Fields:
+            ✔ Read RFC 7230 (section 3.1 & 3.2 - Start Line & Header Fields) and define TODOs. @started(20-08-02 21:33) @done(20-08-03 20:02) @lasted(22h29m4s)
+
+            ☐ Implement HTTP Versions general functionality.
+            ☐ Implement Status Codes general functionality (that includes generating reason-phrase).
+
+            ☐ Create the definition on interfaces for HTTP-message elements.
+                ☐ Create the interface for start-line (superset of request-line and status-line).
+                    ☐ Create the interface for request-line.
+                    ☐ Create the interface for status-line.
+                ☐ Create the interface for header-field (it shall support accessing field-name and field-value as strings).
+                ☐ Create the interface for IHeaders (it shall support accessing header-fields by their field-names; case-insensitive).
+
+            ☐ Implement RequestLine class, which will represent HTTP request-lines.
+            ☐ Implement StatusLine class, which will represent HTTP status-lines.
+            ☐ Implement Headers container for holding all header-fields of a HTTP-message.
+
+            ☐ Create IRequest interface for representing a HTTP request and create an implementation of it.
+            ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
+
+        Message Body:
+            ☐ Read RFC 7230 (section 3.3 - Message Body) and define TODOs.
 
 HTTP/1.1:
+    HTTP Message:
+        HTTP Request:
+            ☐ Implement the parser for parsing an HTTP Request into an object of type IRequest.
+
+        HTTP Response:
+            ☐ Implement the builder for building HTTP Responses from the objects of type IResponse.
 
 HTTP/2:
