@@ -157,7 +157,7 @@ namespace Http.StatusCode
             /// The 400 (Bad Request) status code indicates that the server cannot or will not process the request due
             /// to something that is perceived to be a client error.
             /// </summary>
-            {400, new StatusCode(400) },
+            { 400, new StatusCode(400) },
 
             /// <summary>
             /// The 401 (Unauthorized) status code indicates that the request has not been applied because it lacks
@@ -165,19 +165,19 @@ namespace Http.StatusCode
             /// send a WWW-Authenticate header field containing at least one challenge applicable to the target
             /// resource.
             /// </summary>
-            {401, new StatusCode(401) },
+            { 401, new StatusCode(401) },
 
             /// <summary>
             /// The 402 (Payment Required) status code is reserved for future use.
             /// </summary>
-            {402, new StatusCode(402) },
+            { 402, new StatusCode(402) },
 
             /// <summary>
             /// The 403 (Forbidden) status code indicates that the server understood the request but refuses to
             /// authorize it.  A server that wishes to make public why the request has been forbidden can describe that
             /// reason in the response payload (if any).
             /// </summary>
-            {403, new StatusCode(403) },
+            { 403, new StatusCode(403) },
 
             /// <summary>
             /// The 404 (Not Found) status code indicates that the origin server did not find a current representation
@@ -186,7 +186,7 @@ namespace Http.StatusCode
             /// preferred over 404 if the origin server knows, presumably through some configurable means, that the
             /// condition is likely to be permanent.
             /// </summary>
-            {404, new StatusCode(404) },
+            { 404, new StatusCode(404) },
 
             /// <summary>
             /// The 405 (Method Not Allowed) status code indicates that the method received in the request-line is
@@ -194,7 +194,7 @@ namespace Http.StatusCode
             /// Allow header field in a 405 response containing a list of the target resource's currently supported
             /// methods.
             /// </summary>
-            {405, new StatusCode(405) },
+            { 405, new StatusCode(405) },
 
             /// <summary>
             /// The 406 (Not Acceptable) status code indicates that the target resource does not have a current
@@ -204,14 +204,14 @@ namespace Http.StatusCode
             /// <seealso href="https://tools.ietf.org/html/rfc7231#section-5.3">
             /// RFC 7231 (Section 5.3 - Content Negotiation)
             /// </seealso>
-            {406, new StatusCode(406) },
+            { 406, new StatusCode(406) },
 
             /// <summary>
             /// The 407 (Proxy Authentication Required) status code is similar to 401 (Unauthorized), but it indicates
             /// that the client needs to authenticate itself in order to use a proxy.  The proxy MUST send a
             /// Proxy-Authenticate header field containing a challenge applicable to that proxy for the target resource.
             /// </summary>
-            {407, new StatusCode(407) },
+            { 407, new StatusCode(407) },
 
             /// <summary>
             ///  The 408 (Request Timeout) status code indicates that the server did not receive a complete request
@@ -220,7 +220,7 @@ namespace Http.StatusCode
             /// than continue waiting.  If the client has an outstanding request in transit, the client MAY repeat that
             /// request on a new connection.
             /// </summary>
-            {408, new StatusCode(408) },
+            { 408, new StatusCode(408) },
 
             /// <summary>
             /// The 409 (Conflict) status code indicates that the request could not be completed due to a conflict with
@@ -228,39 +228,39 @@ namespace Http.StatusCode
             /// to resolve the conflict and resubmit the request.  The server SHOULD generate a payload that includes
             /// enough information for a user to recognize the source of the conflict.
             /// </summary>
-            {409, new StatusCode(409) },
+            { 409, new StatusCode(409) },
 
             /// <summary>
             /// The 410 (Gone) status code indicates that access to the target resource is no longer available at the
             /// origin server and that this condition is likely to be permanent.
             /// </summary>
-            {410, new StatusCode(410) },
+            { 410, new StatusCode(410) },
 
             /// <summary>
             /// The 411 (Length Required) status code indicates that the server refuses to accept the request without a
             /// defined Content-Length.
             /// </summary>
-            {411, new StatusCode(411) },
+            { 411, new StatusCode(411) },
 
             /// <summary>
             /// The 412 (Precondition Failed) status code indicates that one or more conditions given in the request
             /// header fields evaluated to false when tested on the server.
             /// </summary>
-            {412, new StatusCode(412) },
+            { 412, new StatusCode(412) },
 
             /// <summary>
             /// The 413 (Payload Too Large) status code indicates that the server is refusing to process a request
             /// because the request payload is larger than the server is willing or able to process.  The server MAY
             /// close the connection to prevent the client from continuing the request.
             /// </summary>
-            {413, new StatusCode(413) },
+            { 413, new StatusCode(413) },
 
             /// <summary>
             /// The 414 (URI Too Long) status code indicates that the server is refusing to service the request because
             /// the request-target is longer than the server is willing to interpret.
             /// </summary>
             /// <returns></returns>
-            {414, new StatusCode(414) },
+            { 414, new StatusCode(414) },
 
             /// <summary>
             /// The 415 (Unsupported Media Type) status code indicates that the origin server is refusing to service the
@@ -268,7 +268,7 @@ namespace Http.StatusCode
             /// format problem might be due to the request's indicated Content-Type or Content-Encoding, or as a result
             /// of inspecting the data directly.
             /// </summary>
-            {415, new StatusCode(415) },
+            { 415, new StatusCode(415) },
 
             /// <summary>
             /// The 416 (Range Not Satisfiable) status code indicates that none of the ranges in the request's Range
@@ -276,20 +276,20 @@ namespace Http.StatusCode
             /// requested has been rejected due to invalid ranges or an excessive request of small or overlapping
             /// ranges.
             /// </summary>
-            {416, new StatusCode(416) },
+            { 416, new StatusCode(416) },
 
             /// <summary>
             /// The 417 (Expectation Failed) status code indicates that the expectation given in the request's Expect
             /// header field could not be met by at least one of the inbound servers.
             /// </summary>
-            {417, new StatusCode(417) },
+            { 417, new StatusCode(417) },
 
             /// <summary>
             /// The 426 (Upgrade Required) status code indicates that the server refuses to perform the request using
             /// the current protocol but might be willing to do so after the client upgrades to a different protocol.
             /// The server MUST send an Upgrade header field in a 426 response to indicate the required protocol(s).
             /// </summary>
-            {426, new StatusCode(426) },
+            { 426, new StatusCode(426) },
 
             // Server Error
             /// <summary>
