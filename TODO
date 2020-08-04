@@ -1,7 +1,8 @@
 
 Bug log:
     According to the documentation (namely section 3.1.1 of RFC 7230) the request method is case-sensitive.
-    ☐ Fix a bug inside Http.Method class that causes to compare the given method name to the names of valid HTTP methods in case-insensitive manner.
+    Update; Not applicable after refactoring `Http.Method` class.
+    ✘ Fix a bug inside Http.Method class that causes to compare the given method name to the names of valid HTTP methods in case-insensitive manner. @cancelled(20-08-04 20:44)
 
 General:
     HTTP Message:
@@ -10,7 +11,9 @@ General:
 
             ✔ Implement HTTP Versions general functionality. @started(20-08-04 18:16) @done(20-08-04 19:02) @lasted(46m51s)
             ✔ Implement Status Codes general functionality. @started(20-08-04 19:03) @done(20-08-04 20:20) @lasted(1h17m8s)
-            ☐ Refactor `Http.Method` class to not contain the implementation of deserializer.
+            ✔ Refactor `Http.Method` class to not contain the implementation of deserializer. @started(20-08-04 20:24) @done(20-08-04 20:44) @lasted(20m2s)
+
+            ☐ Rename repositories' `Get` methods.
 
             ☐ Create the definition on interfaces for HTTP-message elements.
                 ☐ Create the interface for start-line (superset of request-line and status-line).
