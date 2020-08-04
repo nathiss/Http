@@ -25,6 +25,6 @@ namespace Http.Method
         /// <exception cref="UnknownMethodException">
         /// An exception of this type is thrown when the given <paramref name="type" /> is unrecognized.
         /// </exception>
-        Method Get(MethodType type);
+        Method GetMethod(MethodType type);
     }
 }

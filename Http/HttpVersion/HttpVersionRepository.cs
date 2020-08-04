@@ -16,7 +16,7 @@ namespace Http.HttpVersion
     public class HttpVersionRepository : IHttpVersionRepository
     {
         /// <inheritdoc />
-        public HttpVersion Get(HttpVersionType version)
+        public HttpVersion GetHttpVersion(HttpVersionType version)
         {
             try
             {

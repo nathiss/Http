@@ -18,13 +18,14 @@ namespace Http.Tests.HttpVersion
         [DataRow(HttpVersionType.Http1_0)]
         [DataRow(HttpVersionType.Http1_1)]
         [DataRow(HttpVersionType.Http2_0)]
-        public void Get_GivenValidHttpVersionType_ReturnsHttpVersionObjectContainingTheSameValue(HttpVersionType type)
+        public void GetHttpVersion_GivenValidHttpVersionType_ReturnsHttpVersionObjectContainingTheSameValue(
+            HttpVersionType type)
         {
             // Arrange
             var repository = new HttpVersionRepository();
 
             // Act
-            var version = repository.Get(type);
+            var version = repository.GetHttpVersion(type);
 
             // Assert
             Assert.AreEqual(type, version.Version);

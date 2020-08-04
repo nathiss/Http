@@ -25,6 +25,6 @@ namespace Http.HttpVersion
         /// <exception cref="UnknownHttpVersionException">
         /// An exception of this type is thrown when the given <paramref name="version" /> is unrecognized.
         /// </exception>
-        HttpVersion Get(HttpVersionType version);
+        HttpVersion GetHttpVersion(HttpVersionType version);
     }
 }

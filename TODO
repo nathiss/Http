@@ -13,7 +13,7 @@ General:
             ✔ Implement Status Codes general functionality. @started(20-08-04 19:03) @done(20-08-04 20:20) @lasted(1h17m8s)
             ✔ Refactor `Http.Method` class to not contain the implementation of deserializer. @started(20-08-04 20:24) @done(20-08-04 20:44) @lasted(20m2s)
 
-            ☐ Rename repositories' `Get` methods.
+            ✔ Rename repositories' `Get` methods. @started(20-08-04 20:47) @done(20-08-04 20:47) @lasted(27s)
 
             ☐ Create the definition on interfaces for HTTP-message elements.
                 ☐ Create the interface for start-line (superset of request-line and status-line).

@@ -16,7 +16,7 @@ namespace Http.Method
     public class MethodRepository : IMethodRepository
     {
         /// <inheritdoc />
-        public Method Get(MethodType type)
+        public Method GetMethod(MethodType type)
         {
             try
             {

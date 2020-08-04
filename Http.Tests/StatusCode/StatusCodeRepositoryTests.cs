@@ -57,13 +57,13 @@ namespace Http.Tests.StatusCode
         [DataRow(503)]
         [DataRow(504)]
         [DataRow(505)]
-        public void Get_GivenValidStatusCodeNumber_ReturnsObjectConstaingTheSameNumber(int statusCodeNumber)
+        public void GetStatusCode_GivenValidStatusCodeNumber_ReturnsObjectConstaingTheSameNumber(int statusCodeNumber)
         {
             // Arrange
             var repository = new StatusCodeRepository();
 
             // Act
-            var statusCode = repository.Get(statusCodeNumber);
+            var statusCode = repository.GetStatusCode(statusCodeNumber);
 
             // Assert
             Assert.AreEqual(statusCodeNumber, statusCode.Value);
@@ -76,13 +76,14 @@ namespace Http.Tests.StatusCode
         [DataRow(100000000)]
         [DataRow(506)]
         [DataRow(308)]
-        public void Get_GivenInvalidStatusCodeNumber_ThrownsAnExceptionOfTypeUnknownStatusCodeException(int statusCode)
+        public void GetStatusCode_GivenInvalidStatusCodeNumber_ThrownsAnExceptionOfTypeUnknownStatusCodeException(
+            int statusCodeNumber)
         {
             // Arrange
             var repository = new StatusCodeRepository();
 
             // Assert
-            Assert.ThrowsException<UnknownStatusCodeException>(() => repository.Get(statusCode));
+            Assert.ThrowsException<UnknownStatusCodeException>(() => repository.GetStatusCode(statusCodeNumber));
         }
     }
 }

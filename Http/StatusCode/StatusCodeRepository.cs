@@ -16,7 +16,7 @@ namespace Http.StatusCode
     public class StatusCodeRepository : IStatusCodeRepository
     {
         /// <inheritdoc />
-        public StatusCode Get(int statusCodeValue)
+        public StatusCode GetStatusCode(int statusCodeValue)
         {
             try
             {

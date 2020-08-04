@@ -26,6 +26,6 @@ namespace Http.StatusCode
         /// <exception cref="UnknownStatusCodeException">
         /// An exception of this type is thrown when the given <paramref name="statusCodeValue" /> is unrecognized.
         /// </exception>
-        StatusCode Get(int statusCodeValue);
+        StatusCode GetStatusCode(int statusCodeValue);
     }
 }

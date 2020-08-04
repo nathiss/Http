@@ -24,13 +24,13 @@ namespace Http.Tests.Method
         [DataRow(MethodType.Trace)]
         [DataRow(MethodType.Connect)]
         [DataRow(MethodType.Options)]
-        public void Get_GivenValidMethodType_ReturnsObjectContainingTheSameType(MethodType type)
+        public void GetMethod_GivenValidMethodType_ReturnsObjectContainingTheSameType(MethodType type)
         {
             // Arrange
             var repository = new MethodRepository();
 
             // Act
-            var method = repository.Get(type);
+            var method = repository.GetMethod(type);
 
             // Assert
             Assert.AreEqual(type, method.Type);
