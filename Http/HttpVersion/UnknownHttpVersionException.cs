@@ -14,12 +14,12 @@ namespace Http.HttpVersion
     /// This class represents an exception used to indicate that unknown HTTP version has been requested.
     /// </summary>
     [Serializable]
-    public class UnknownHttpVersion : Exception
+    public class UnknownHttpVersionException : Exception
     {
         /// <summary>
         /// This is the default constructor used to initialize an instance of this class.
         /// </summary>
-        public UnknownHttpVersion() : base() { }
+        public UnknownHttpVersionException() : base() { }
 
         /// <summary>
         /// This constructor is used to set the exception message to the given <paramref name="message" />.
@@ -27,6 +27,6 @@ namespace Http.HttpVersion
         /// <param name="message">
         /// This string represents the message that will be used as the exception message.
         /// </param>
-        public UnknownHttpVersion(string message) : base(message) { }
+        public UnknownHttpVersionException(string message) : base(message) { }
     }
 }

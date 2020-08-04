@@ -24,7 +24,7 @@ namespace Http.HttpVersion
             }
             catch (KeyNotFoundException)
             {
-                throw new UnknownHttpVersion($"Unknown HTTP protocol version: {version}");
+                throw new UnknownHttpVersionException($"Unknown HTTP protocol version: {version}");
             }
         }
 

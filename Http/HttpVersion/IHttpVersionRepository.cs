@@ -22,7 +22,7 @@ namespace Http.HttpVersion
         /// <returns>
         /// A <see cref="HttpVersion" /> object which matches the given <paramref name="version" /> is returned.
         /// </returns>
-        /// <exception cref="UnknownHttpVersion">
+        /// <exception cref="UnknownHttpVersionException">
         /// An exception of this type is thrown when the given <paramref name="version" /> is unrecognized.
         /// </exception>
         HttpVersion Get(HttpVersionType version);
