@@ -1,8 +1,8 @@
 
 Bug log:
-    According to the documentation (namely section 3.1.1 of RFC 7230) the request method is case-sensitive.
-    Update; Not applicable after refactoring `Http.Method` class.
     ✘ Fix a bug inside Http.Method class that causes to compare the given method name to the names of valid HTTP methods in case-insensitive manner. @cancelled(20-08-04 20:44)
+        According to the documentation (namely section 3.1.1 of RFC 7230) the request method is case-sensitive.
+        Update; Not applicable after refactoring `Http.Method` class.
 
 General:
     HTTP Message:
@@ -15,12 +15,14 @@ General:
 
             ✔ Rename repositories' `Get` methods. @started(20-08-04 20:47) @done(20-08-04 20:47) @lasted(27s)
 
-            ☐ Create the definition on interfaces for HTTP-message elements.
-                ☐ Create the interface for start-line (superset of request-line and status-line).
+            ☐ Create the definition on interfaces for HTTP-message elements. @started(20-08-05 19:21)
+                ☐ Create the interface for start-line (superset of request-line and status-line). @started(20-08-05 20:47)
                     ☐ Create the interface for request-line.
                     ☐ Create the interface for status-line.
-                ☐ Create the interface for header-field (it shall support accessing field-name and field-value as strings).
-                ☐ Create the interface for IHeaders (it shall support accessing header-fields by their field-names; case-insensitive).
+                ✔ Create the interface for header-field (it shall support accessing field-name and field-value as strings). @started(20-08-05 19:22) @done(20-08-05 19:37) @lasted(15m17s)
+                    Completed, although this task has been changed. I implemneted a class not a interface.
+                ✔ Create the interface for IHeaders (it shall support accessing header-fields by their field-names; case-insensitive). @started(20-08-05 19:22) @done(20-08-05 20:46) @lasted(1h24m12s)
+                    Created the interface and the implementation.
 
             ☐ Implement RequestLine class, which will represent HTTP request-lines.
             ☐ Implement StatusLine class, which will represent HTTP status-lines.
