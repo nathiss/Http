@@ -9,9 +9,9 @@
 namespace Http.Method
 {
     /// <summary>
-    /// This enum is used by <see cref="Method" /> to distinguish HTTP methods.
+    /// This enum is used by <see cref="HttpMethod" /> to distinguish HTTP methods.
     /// </summary>
-    public enum MethodType
+    public enum HttpMethodType
     {
         /// <summary>
         /// The GET method means retrieve whatever information (in the form of an entity)

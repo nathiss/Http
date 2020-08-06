@@ -14,12 +14,12 @@ namespace Http.Method
     /// This class represents an exception used to indicate that unknown method has been requested.
     /// </summary>
     [Serializable]
-    public class UnknownMethodException : Exception
+    public class UnknownHttpMethodException : Exception
     {
         /// <summary>
         /// This is the default constructor used to initialize an instance of this class.
         /// </summary>
-        public UnknownMethodException() : base() { }
+        public UnknownHttpMethodException() : base() { }
 
         /// <summary>
         /// This constructor is used to set the exception message to the given <paramref name="message" />.
@@ -27,6 +27,6 @@ namespace Http.Method
         /// <param name="message">
         /// This string represents the message that will be used as the exception message.
         /// </param>
-        public UnknownMethodException(string message) : base(message) { }
+        public UnknownHttpMethodException(string message) : base(message) { }
     }
 }

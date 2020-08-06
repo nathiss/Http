@@ -9,22 +9,22 @@
 namespace Http.Method
 {
     /// <summary>
-    /// This interface defines the functionality to get access to <see cref="Method" /> objects.
+    /// This interface defines the functionality to get access to <see cref="HttpMethod" /> objects.
     /// </summary>
-    public interface IMethodRepository
+    public interface IHttpMethodRepository
     {
         /// <summary>
-        /// This method returns a <see cref="Method" /> object which matches the given <paramref name="type" />.
+        /// This method returns a <see cref="HttpMethod" /> object which matches the given <paramref name="type" />.
         /// </summary>
         /// <param name="version">
-        /// This is the method used to match <see cref="Method" /> object.
+        /// This is the method used to match <see cref="HttpMethod" /> object.
         /// </param>
         /// <returns>
-        /// A <see cref="Method" /> object which matches the given <paramref name="type" /> is returned.
+        /// A <see cref="HttpMethod" /> object which matches the given <paramref name="type" /> is returned.
         /// </returns>
-        /// <exception cref="UnknownMethodException">
+        /// <exception cref="UnknownHttpMethodException">
         /// An exception of this type is thrown when the given <paramref name="type" /> is unrecognized.
         /// </exception>
-        Method GetMethod(MethodType type);
+        HttpMethod GetMethod(HttpMethodType type);
     }
 }

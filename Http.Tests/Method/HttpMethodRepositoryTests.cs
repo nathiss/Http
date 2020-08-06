@@ -12,22 +12,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Http.Tests.Method
 {
     [TestClass]
-    public class MethodRepositoryTests
+    public class HttpMethodRepositoryTests
     {
         [DataTestMethod]
-        [DataRow(MethodType.Get)]
-        [DataRow(MethodType.Head)]
-        [DataRow(MethodType.Post)]
-        [DataRow(MethodType.Put)]
-        [DataRow(MethodType.Put)]
-        [DataRow(MethodType.Delete)]
-        [DataRow(MethodType.Trace)]
-        [DataRow(MethodType.Connect)]
-        [DataRow(MethodType.Options)]
-        public void GetMethod_GivenValidMethodType_ReturnsObjectContainingTheSameType(MethodType type)
+        [DataRow(HttpMethodType.Get)]
+        [DataRow(HttpMethodType.Head)]
+        [DataRow(HttpMethodType.Post)]
+        [DataRow(HttpMethodType.Put)]
+        [DataRow(HttpMethodType.Put)]
+        [DataRow(HttpMethodType.Delete)]
+        [DataRow(HttpMethodType.Trace)]
+        [DataRow(HttpMethodType.Connect)]
+        [DataRow(HttpMethodType.Options)]
+        public void GetMethod_GivenValidMethodType_ReturnsObjectContainingTheSameType(HttpMethodType type)
         {
             // Arrange
-            var repository = new MethodRepository();
+            var repository = new HttpMethodRepository();
 
             // Act
             var method = repository.GetMethod(type);

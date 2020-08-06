@@ -11,12 +11,12 @@ namespace Http.Method
     /// <summary>
     /// This class is used to represent HTTP methods used inside HTTP request messages.
     /// </summary>
-    public class Method
+    public class HttpMethod
     {
         /// <summary>
         /// This property holds the value which identifies the HTTP method represented by this instance.
         /// </summary>
-        public MethodType Type { get; }
+        public HttpMethodType Type { get; }
 
         /// <summary>
         /// This constructor is used to set the <see cref="Type" /> property to the given
@@ -25,7 +25,7 @@ namespace Http.Method
         /// <param name="type">
         /// This value represents a HTTP method.
         /// </param>
-        internal Method(MethodType type)
+        internal HttpMethod(HttpMethodType type)
         {
             Type = type;
         }
