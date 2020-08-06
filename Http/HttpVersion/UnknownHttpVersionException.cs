@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Http.HttpVersion
+namespace Http.Version
 {
     /// <summary>
     /// This class represents an exception used to indicate that unknown HTTP version has been requested.

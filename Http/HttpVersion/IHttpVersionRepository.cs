@@ -6,7 +6,7 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
-namespace Http.HttpVersion
+namespace Http.Version
 {
     /// <summary>
     /// This interface defines the functionality to get access to <see cref="HttpVersion" /> objects.

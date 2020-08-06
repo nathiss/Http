@@ -8,7 +8,7 @@
 
 using System.Collections.Generic;
 
-namespace Http.HttpVersion
+namespace Http.Version
 {
     /// <summary>
     /// This class implements the functionality used to access <see cref="HttpVersion" /> objects.

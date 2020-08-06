@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace Http.HttpVersion
+namespace Http.Version
 {
     /// <summary>
     /// This enum is used by <see cref="HttpVersion" /> to distinguish HTTP protocol versions.

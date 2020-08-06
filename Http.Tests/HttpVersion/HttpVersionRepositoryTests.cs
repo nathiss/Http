@@ -6,10 +6,10 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
-using Http.HttpVersion;
+using Http.Version;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Http.Tests.HttpVersion
+namespace Http.Tests.Version
 {
     [TestClass]
     public class HttpVersionRepositoryTests

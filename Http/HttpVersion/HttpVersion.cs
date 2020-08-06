@@ -6,7 +6,7 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
-namespace Http.HttpVersion
+namespace Http.Version
 {
     /// <summary>
     /// This class is used to represent HTTP-versions used inside request-lines and status-lines.
