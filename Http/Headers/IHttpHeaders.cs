@@ -6,6 +6,8 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
+using System.Collections.Generic;
+
 namespace Http.Headers
 {
     /// <summary>
@@ -36,5 +38,13 @@ namespace Http.Headers
         /// This property returns the amount of headers stored in this collection.
         /// </summary>
         int Count { get; }
+
+        /// <summary>
+        /// This methods a collection of <see cref="HeaderField" /> each representing one HTTP header-field.
+        /// </summary>
+        /// <returns>
+        /// A collection of <see cref="HeaderField" /> each representing one HTTP header-field is returned.
+        /// </returns>
+        IList<HeaderField> ToList();
     }
 }

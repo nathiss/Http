@@ -12,14 +12,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Http.Tests.Headers
 {
     [TestClass]
-    public class HeadersTests
+    public class HttpHeadersTests
     {
         private IHeaders headers;
 
         [TestInitialize]
         public void SetHeaders()
         {
-            headers = new Http.Headers.Headers();
+            headers = new HttpHeaders();
         }
 
         [TestMethod]
@@ -97,6 +97,82 @@ namespace Http.Tests.Headers
 
             // Assert
             Assert.AreEqual("True", headers["keep-ALIVE"]);
+        }
+
+        [TestMethod]
+        public void ToList_GivenEmptyCollection_ReturnsZeroAsTheNumberOfElements()
+        {
+            // Assert
+            Assert.AreEqual(0, headers.ToList().Count);
+        }
+
+        [TestMethod]
+        public void ToList_GivenCollectionOfTwoElements_ReturnsTwoAsTheNumberOfElements()
+        {
+            // Act
+            headers["Host"] = "example.com";
+            headers["Keep-Alive"] = "True";
+
+            // Assert
+            Assert.AreEqual(2, headers.ToList().Count);
+        }
+
+        [TestMethod]
+        public void IndexerString_GivenFieldNameWithWrongCase_ReturnsNormalizedCase()
+        {
+            // Act
+            headers["host"] = "example.com";
+
+            // Assert
+            Assert.AreEqual("Host", headers.ToList()[0].Name);
+        }
+
+        [TestMethod]
+        public void IndexerString_GivenFieldNameWithVeryWrongCase_ReturnsNormalizedCase()
+        {
+            // Act
+            headers["hOST"] = "example.com";
+
+            // Assert
+            Assert.AreEqual("Host", headers.ToList()[0].Name);
+        }
+
+        [TestMethod]
+        public void IndexerString_GivenFieldNameWithDashAndWrongCase_ReturnsNormalizedCase()
+        {
+            // Act
+            headers["keep-alive"] = "True";
+
+            // Assert
+            Assert.AreEqual("Keep-Alive", headers.ToList()[0].Name);
+        }
+
+        [TestMethod]
+        public void IndexerString_GivenFieldNameWithSeveralDashes_ReturnsNormalizedCase()
+        {
+            // Act
+            headers["clear-side-DATA"] = string.Empty;
+
+            // Assert
+            Assert.AreEqual("Clear-Side-Data", headers.ToList()[0].Name);
+        }
+
+        [DataTestMethod]
+        [DataRow("te", "TE")]
+        [DataRow("www-Authenticate", "WWW-Authenticate")]
+        [DataRow("content-md5", "Content-MD5")]
+        [DataRow("p3p", "P3P")]
+        [DataRow("http2-settings", "HTTP2-Settings")]
+        public void IndexerString_GivenFieldNameThatRequiresCustomCase_ReturnsNormalizedCase(
+            string fieldName,
+            string normalizedFieldName
+        )
+        {
+            // Act
+            headers[fieldName] = string.Empty;
+
+            // Assert
+            Assert.AreEqual(normalizedFieldName, headers.ToList()[^1].Name);
         }
     }
 }

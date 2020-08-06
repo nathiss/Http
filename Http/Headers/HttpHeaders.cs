@@ -15,7 +15,7 @@ namespace Http.Headers
     /// <summary>
     /// This class represents the headers section of HTTP requests and HTTP responses.
     /// </summary>
-    public class Headers : IHeaders
+    public class HttpHeaders<T> : IHeaders where T : IFieldNameNormalizer, new()
     {
         /// <inheritdoc />
         public string this[string fieldName]
@@ -40,13 +40,17 @@ namespace Http.Headers
                 }
                 catch (InvalidOperationException)
                 {
-                    headers.Add(HeaderField.Create(fieldName, value));
+                    var normalizedFieldName = fieldNameNormalizer.Normalize(fieldName);
+                    headers.Add(HeaderField.Create(normalizedFieldName, value));
                 }
             }
         }
 
         /// <inheritdoc />
         public int Count => headers.Count;
+
+        /// <inheritdoc />
+        public IList<HeaderField> ToList() => headers.ToList();
 
         /// <summary>
         /// This method returns a header-field which field-name is equal to the given <paramref name="fieldName" />
@@ -77,5 +81,16 @@ namespace Http.Headers
         /// This type represents a single header-field.
         /// </typeparam>
         private readonly IList<HeaderField> headers = new List<HeaderField>();
+
+        /// <summary>
+        /// This field is used to normalize field-names of all header-fields stored in this container.
+        /// </summary>
+        private readonly IFieldNameNormalizer fieldNameNormalizer = new T();
     }
+
+    /// <summary>
+    /// This class is the default specialization of the generic class <see cref="HttpHeaders{T}" /> with
+    /// <see cref="DefaultFieldNameNormalizer" /> passed as the generic parameter.
+    /// </summary>
+    public class HttpHeaders : HttpHeaders<DefaultFieldNameNormalizer> { }
 }
