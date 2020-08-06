@@ -17,8 +17,8 @@ General:
 
             ☐ Create the definition on interfaces for HTTP-message elements. @started(20-08-05 19:21)
                 ☐ Create the interface for start-line (superset of request-line and status-line). @started(20-08-05 20:47)
-                    ☐ Create the interface for request-line.
-                    ☐ Create the interface for status-line.
+                    ✔ Create the interface for request-line. @started(20-08-06 18:26) @done(20-08-06 18:27) @lasted(1m38s)
+                    ☐ Create the interface for status-line. @started(20-08-06 18:27)
                 ✔ Create the interface for header-field (it shall support accessing field-name and field-value as strings). @started(20-08-05 19:22) @done(20-08-05 19:37) @lasted(15m17s)
                     Completed, although this task has been changed. I implemneted a class not a interface.
                 ✔ Create the interface for IHeaders (it shall support accessing header-fields by their field-names; case-insensitive). @started(20-08-05 19:22) @done(20-08-05 20:46) @lasted(1h24m12s)
