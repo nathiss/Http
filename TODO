@@ -15,10 +15,10 @@ General:
 
             ✔ Rename repositories' `Get` methods. @started(20-08-04 20:47) @done(20-08-04 20:47) @lasted(27s)
 
-            ☐ Create the definition on interfaces for HTTP-message elements. @started(20-08-05 19:21)
-                ☐ Create the interface for start-line (superset of request-line and status-line). @started(20-08-05 20:47)
+            ✔ Create the definition on interfaces for HTTP-message elements. @started(20-08-05 19:21) @done(20-08-06 18:36) @lasted(23h15m34s)
+                ✔ Create the interface for start-line (superset of request-line and status-line). @started(20-08-05 20:47) @done(20-08-06 18:35) @lasted(21h48m30s)
                     ✔ Create the interface for request-line. @started(20-08-06 18:26) @done(20-08-06 18:27) @lasted(1m38s)
-                    ☐ Create the interface for status-line. @started(20-08-06 18:27)
+                    ✔ Create the interface for status-line. @started(20-08-06 18:27) @done(20-08-06 18:35) @lasted(8m21s)
                 ✔ Create the interface for header-field (it shall support accessing field-name and field-value as strings). @started(20-08-05 19:22) @done(20-08-05 19:37) @lasted(15m17s)
                     Completed, although this task has been changed. I implemneted a class not a interface.
                 ✔ Create the interface for IHeaders (it shall support accessing header-fields by their field-names; case-insensitive). @started(20-08-05 19:22) @done(20-08-05 20:46) @lasted(1h24m12s)
@@ -26,13 +26,15 @@ General:
 
             ☐ Implement RequestLine class, which will represent HTTP request-lines.
             ☐ Implement StatusLine class, which will represent HTTP status-lines.
-            ☐ Implement Headers container for holding all header-fields of a HTTP-message.
 
-            ☐ Create IRequest interface for representing a HTTP request and create an implementation of it.
-            ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
+            ✘ Implement Headers container for holding all header-fields of a HTTP-message. @cancelled(20-08-06 18:38)
+            ☐ Implement field-name normalization for header-fields.
 
         Message Body:
             ☐ Read RFC 7230 (section 3.3 - Message Body) and define TODOs.
+
+        ☐ Create IRequest interface for representing a HTTP request and create an implementation of it.
+        ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
 
 HTTP/1.1:
     HTTP Message:

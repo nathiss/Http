@@ -16,7 +16,7 @@ namespace Http.Http11
     /// This interface provides the functionality to operate on the objects representing HTTP request-lines.
     /// </summary>
     /// <seealso href="https://tools.ietf.org/html/rfc7230#section-3.1.1">
-    /// RFC 7230 (Section 3.1.1 - Request line)
+    /// RFC 7230 (Section 3.1.1. - Request line)
     /// </seealso>
     public interface IRequestLine : IStartLine
     {
