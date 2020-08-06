@@ -9,23 +9,23 @@
 namespace Http.StatusCode
 {
     /// <summary>
-    /// This interface defines the functionality to access <see cref="StatusCode" /> which are known.
+    /// This interface defines the functionality to access <see cref="HttpStatusCode" /> which are known.
     /// </summary>
-    public interface IStatusCodeRepository
+    public interface IHttpStatusCodeRepository
     {
         /// <summary>
-        /// This method returns a <see cref="StatusCode" /> object which matches the given
+        /// This method returns a <see cref="HttpStatusCode" /> object which matches the given
         /// <paramref name="statusCodeValue" />.
         /// </summary>
         /// <param name="statusCodeValue">
-        /// This is the number which will be used to get the right <see cref="StatusCode" /> object.
+        /// This is the number which will be used to get the right <see cref="HttpStatusCode" /> object.
         /// </param>
         /// <returns>
-        /// A <see cref="StatusCode" /> object which matches the given <paramref name="statusCodeValue" /> is returned.
+        /// A <see cref="HttpStatusCode" /> object which matches the given <paramref name="statusCodeValue" /> is returned.
         /// </returns>
-        /// <exception cref="UnknownStatusCodeException">
+        /// <exception cref="UnknownHttpStatusCodeException">
         /// An exception of this type is thrown when the given <paramref name="statusCodeValue" /> is unrecognized.
         /// </exception>
-        StatusCode GetStatusCode(int statusCodeValue);
+        HttpStatusCode GetStatusCode(int statusCodeValue);
     }
 }

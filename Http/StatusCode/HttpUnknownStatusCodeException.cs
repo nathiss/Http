@@ -14,12 +14,12 @@ namespace Http.StatusCode
     /// This class represents an exception used to indicate that unknown HTTP status-code has been requested.
     /// </summary>
     [Serializable]
-    public class UnknownStatusCodeException : Exception
+    public class UnknownHttpStatusCodeException : Exception
     {
         /// <summary>
         /// This is the default constructor used to initialize an instance of this class.
         /// </summary>
-        public UnknownStatusCodeException() { }
+        public UnknownHttpStatusCodeException() { }
 
         /// <summary>
         /// This constructor is used to set the exception message to the given <paramref name="message" />.
@@ -27,6 +27,6 @@ namespace Http.StatusCode
         /// <param name="message">
         /// This string represents the message that will be used as the exception message.
         /// </param>
-        public UnknownStatusCodeException(string message) : base(message) { }
+        public UnknownHttpStatusCodeException(string message) : base(message) { }
     }
 }

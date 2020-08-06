@@ -13,7 +13,7 @@ namespace Http.StatusCode
     /// resource.
     /// </summary>
     /// <seealso href="https://tools.ietf.org/html/rfc7230#section-3.1.2">RFC 7230 - 3.1.2 Status Line</seealso>
-    public class StatusCode
+    public class HttpStatusCode
     {
         /// <summary>
         /// This property contains the number representing HTTP status-code of this instance.
@@ -26,7 +26,7 @@ namespace Http.StatusCode
         /// <param name="value">
         /// This value represents a valid HTTP status-code.
         /// </param>
-        internal StatusCode(int value)
+        internal HttpStatusCode(int value)
         {
             Value = value;
         }

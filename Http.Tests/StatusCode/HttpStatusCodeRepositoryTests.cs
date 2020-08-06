@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Http.Tests.StatusCode
 {
     [TestClass]
-    public class StatusCodeRepositoryTests
+    public class HttpStatusCodeRepositoryTests
     {
         [DataTestMethod]
         [DataRow(100)]
@@ -60,7 +60,7 @@ namespace Http.Tests.StatusCode
         public void GetStatusCode_GivenValidStatusCodeNumber_ReturnsObjectConstaingTheSameNumber(int statusCodeNumber)
         {
             // Arrange
-            var repository = new StatusCodeRepository();
+            var repository = new HttpStatusCodeRepository();
 
             // Act
             var statusCode = repository.GetStatusCode(statusCodeNumber);
@@ -80,10 +80,10 @@ namespace Http.Tests.StatusCode
             int statusCodeNumber)
         {
             // Arrange
-            var repository = new StatusCodeRepository();
+            var repository = new HttpStatusCodeRepository();
 
             // Assert
-            Assert.ThrowsException<UnknownStatusCodeException>(() => repository.GetStatusCode(statusCodeNumber));
+            Assert.ThrowsException<UnknownHttpStatusCodeException>(() => repository.GetStatusCode(statusCodeNumber));
         }
     }
 }
