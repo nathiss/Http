@@ -42,6 +42,10 @@ namespace Http.Http11
         /// The value is dynamically set based on the <see cref="StatusCode" /> and it's not possible to set this value
         /// separately. If the <see cref="StatusCode" /> is unknown or null, then the value of this property is null.
         /// </value>
+        /// <exception type="UnknownHttpStatusCodeException">
+        /// An exception of this type is thrown if either the <see cref="StatusCode" /> is invalid or it does not have
+        /// a reason-phrase.
+        /// </exception>
         string ReasonPhrase { get; }
     }
 }

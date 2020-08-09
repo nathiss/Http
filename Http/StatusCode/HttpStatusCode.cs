@@ -30,5 +30,11 @@ namespace Http.StatusCode
         {
             Value = value;
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }
