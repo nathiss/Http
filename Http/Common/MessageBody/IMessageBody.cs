@@ -17,12 +17,18 @@ namespace Http.Common.MessageBody
     public interface IMessageBody
     {
         /// <summary>
+        /// This property returns an indication of whether or not the message body is present.
+        /// </summary>
+        bool HasBody { get; }
+
+        /// <summary>
         /// This property returns the length of the message body.
         /// </summary>
         /// <value>
         /// This property returns the length of the message body. If the message body has not been set, then this
         /// property returns 0.
         /// </value>
+        /// <seealso cref="HasBody" />
         int Count { get; }
 
         /// <summary>

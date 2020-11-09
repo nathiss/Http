@@ -77,6 +77,9 @@ namespace Http.Common.MessageBody
         }
 
         /// <inheritdoc />
+        public bool HasBody => _content == null;
+
+        /// <inheritdoc />
         public int Count
         {
             get => _content?.Count ?? 0;
