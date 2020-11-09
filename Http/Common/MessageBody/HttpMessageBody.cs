@@ -42,7 +42,7 @@ namespace Http.Common.MessageBody
         /// <seealso cref="GetContentString(Encoding)" />
         public void SetContent(string content)
         {
-            if (content == null)
+            if (content is null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
@@ -62,12 +62,12 @@ namespace Http.Common.MessageBody
         /// </param>
         public void SetContent(string content, Encoding encoding)
         {
-            if (content == null)
+            if (content is null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (encoding == null)
+            if (encoding is null)
             {
                 throw new ArgumentNullException(nameof(encoding));
             }
@@ -100,7 +100,7 @@ namespace Http.Common.MessageBody
         /// <inheritdoc />
         public string GetContentString(Encoding encoding)
         {
-            if (encoding == null)
+            if (encoding is null)
             {
                 throw new ArgumentNullException(nameof(encoding));
             }

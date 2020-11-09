@@ -46,7 +46,7 @@ HTTP/1.1:
             ☐ Implement the serializer for building HTTP Responses from the objects of type IResponse.
 
     ☐ Review all access modifiers and make them core strict.
-    ☐ Add null checks for arguments.
+    ✔ Add null checks for arguments. @started(20-11-09 18:41) @done(20-11-09 18:55) @lasted(14m57s)
 
 HTTP/2:
     ☐ Read RFC 7540 & create subsections for this TODO section.

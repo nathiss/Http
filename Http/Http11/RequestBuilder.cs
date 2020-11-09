@@ -102,7 +102,7 @@ namespace Http.Http11
         /// </returns>
         public RequestBuilder SetHeader(string fieldName, string fieldValue)
         {
-            if (fieldName == null)
+            if (fieldName is null)
             {
                 throw new ArgumentNullException(nameof(fieldName));
             }
@@ -140,6 +140,11 @@ namespace Http.Http11
         /// </returns>
         public RequestBuilder SetBody(string content, Encoding encoding)
         {
+            if (encoding is null)
+            {
+                throw new ArgumentNullException(nameof(encoding));
+            }
+
             _httpMessageBody.SetContent(content, encoding);
             return this;
         }

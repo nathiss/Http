@@ -22,6 +22,11 @@ namespace Http.Common.Headers
         {
             get
             {
+                if (fieldName is null)
+                {
+                    throw new ArgumentNullException(nameof(fieldName));
+                }
+
                 try
                 {
                     return GetHeaderFieldByName(fieldName).Value;
@@ -33,6 +38,10 @@ namespace Http.Common.Headers
             }
             set
             {
+                if (fieldName is null)
+                {
+                    throw new ArgumentNullException(nameof(fieldName));
+                }
                 // TODO: add support for special case of 'Set-Cookie' header-field, which can apprear multiple times in
                 // the header section.
                 try

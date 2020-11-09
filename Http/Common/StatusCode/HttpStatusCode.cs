@@ -6,6 +6,8 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
+using System;
+
 namespace Http.Common.StatusCode
 {
     /// <summary>
@@ -28,6 +30,10 @@ namespace Http.Common.StatusCode
         /// </param>
         internal HttpStatusCode(int value)
         {
+            if (value <= 0)
+            {
+                throw new ArgumentException($"{nameof(value)} must be a positive integer.", nameof(value));
+            }
             Value = value;
         }
 

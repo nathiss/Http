@@ -6,6 +6,8 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
+using System;
+
 namespace Http.Common.Headers
 {
     /// <summary>
@@ -67,6 +69,11 @@ namespace Http.Common.Headers
         /// </returns>
         internal static HeaderField Create(string name, string value)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace", nameof(name));
+            }
+
             return new HeaderField(name, value);
         }
     }

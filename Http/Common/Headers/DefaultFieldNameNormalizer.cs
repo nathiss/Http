@@ -21,6 +21,11 @@ namespace Http.Common.Headers
         /// <inheritdoc />
         public string Normalize(string fieldName)
         {
+            if (fieldName is null)
+            {
+                throw new ArgumentNullException(nameof(fieldName));
+            }
+
             var customCaseListIndex = fieldNamesWithCustomCase.FindIndex(
                 customCaseFieldName => customCaseFieldName.Equals(fieldName, StringComparison.OrdinalIgnoreCase)
             );
