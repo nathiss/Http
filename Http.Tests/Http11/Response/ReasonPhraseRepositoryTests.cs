@@ -1,5 +1,5 @@
 #region Copyrights
-// This file is a part of the Http project.
+// This file is a part of the Http.Tests project.
 //
 // Copyright (c) 2020 Kamil Rusin
 // Licensed under the MIT License.
