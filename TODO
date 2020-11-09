@@ -32,6 +32,8 @@ General:
 
         Message Body:
             ☐ Read RFC 7230 (section 3.3 - Message Body) and define TODOs. @started(20-11-09 10:17)
+            ✔ Create IMessageBody interface & barebone implementation of it. @started(20-11-09 11:02) @done(20-11-09 11:55) @lasted(53m36s)
+            ✔ Create unit tests for MessageBody & the implementation of the class. @started(20-11-09 11:45) @done(20-11-09 11:55) @lasted(10m37s)
 
         ☐ Create IRequest interface for representing a HTTP request and create an implementation of it.
         ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
