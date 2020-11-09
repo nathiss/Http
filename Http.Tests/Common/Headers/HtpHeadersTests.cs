@@ -14,7 +14,7 @@ namespace Http.Tests.Common.Headers
     [TestClass]
     public class HttpHeadersTests
     {
-        private IHeaders headers;
+        private IHttpHeaders headers;
 
         [TestInitialize]
         public void SetHeaders()

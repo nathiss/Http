@@ -15,7 +15,7 @@ namespace Http.Common.Headers
     /// <summary>
     /// This class represents the headers section of HTTP requests and HTTP responses.
     /// </summary>
-    public class HttpHeaders<T> : IHeaders where T : IFieldNameNormalizer, new()
+    public class HttpHeaders<T> : IHttpHeaders where T : IFieldNameNormalizer, new()
     {
         /// <inheritdoc />
         public string this[string fieldName]

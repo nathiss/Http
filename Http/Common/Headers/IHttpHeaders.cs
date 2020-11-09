@@ -14,7 +14,7 @@ namespace Http.Common.Headers
     /// This interface implements the functionality to access the header section of HTTP requests and HTTP responses.
     /// </summary>
     /// <seealso cref="HeaderField" />
-    public interface IHeaders
+    public interface IHttpHeaders
     {
         /// <summary>
         /// This indexer is used to:
