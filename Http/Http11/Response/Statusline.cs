@@ -10,7 +10,7 @@ using System;
 using Http.Common.StatusCode;
 using Http.Common.Version;
 
-namespace Http.Http11
+namespace Http.Http11.Response
 {
     /// <summary>
     /// This class provides the functionality to operate on the objects representing HTTP status-lines.

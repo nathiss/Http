@@ -11,11 +11,11 @@ using System.Text;
 using Http.Common.Headers;
 using Http.Common.Method;
 using Http.Common.Version;
-using Http.Http11;
+using Http.Http11.Request;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Uri;
 
-namespace Http.Tests.Http11
+namespace Http.Tests.Http11.Request
 {
     [TestClass]
     public class RequestBuilderTests

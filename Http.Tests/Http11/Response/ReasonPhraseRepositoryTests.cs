@@ -6,11 +6,11 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
-using Http.Http11;
+using Http.Http11.Response;
 using Http.Common.StatusCode;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Http.Tests.Http11
+namespace Http.Tests.Http11.Response
 {
     [TestClass]
     public class ReasonPhraseRepositoryTests

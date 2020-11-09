@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using Http.Common.StatusCode;
 
-namespace Http.Http11
+namespace Http.Http11.Response
 {
     /// <summary>
     /// This class implements the functionality to map <see cref="HttpStatusCode" /> objects into string representing

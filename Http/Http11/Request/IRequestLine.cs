@@ -10,7 +10,7 @@ using Http.Common.Method;
 using Http.Common.Version;
 using Uri;
 
-namespace Http.Http11
+namespace Http.Http11.Request
 {
     /// <summary>
     /// This interface provides the functionality to operate on the objects representing HTTP request-lines.

@@ -15,7 +15,7 @@ using Http.Common.Method;
 using Http.Common.Version;
 using Uri;
 
-namespace Http.Http11
+namespace Http.Http11.Request
 {
     /// <summary>
     /// This class can be used to build a object of type <see cref="IRequest" />.

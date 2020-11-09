@@ -11,7 +11,7 @@ using Http.Common.Method;
 using Http.Common.Version;
 using Uri;
 
-namespace Http.Http11
+namespace Http.Http11.Request
 {
     /// <summary>
     /// This class represents the request-line of HTTP request.
