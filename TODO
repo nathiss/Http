@@ -35,15 +35,18 @@ General:
             ✔ Create IMessageBody interface & barebone implementation of it. @started(20-11-09 11:02) @done(20-11-09 11:55) @lasted(53m36s)
             ✔ Create unit tests for MessageBody & the implementation of the class. @started(20-11-09 11:45) @done(20-11-09 11:55) @lasted(10m37s)
 
-        ☐ Create IRequest interface for representing a HTTP request and create an implementation of it.
-        ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
-
 HTTP/1.1:
     HTTP Message:
         HTTP Request:
+            ✔ Create IRequest interface for representing a HTTP request and create an implementation of it. @started(20-11-09 14:07) @done(20-11-09 18:39) @lasted(4h32m16s)
             ☐ Implement the parser for parsing an HTTP Request into an object of type IRequest.
 
-        HTTP Response:
+            HTTP Response:
+            ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
             ☐ Implement the serializer for building HTTP Responses from the objects of type IResponse.
 
+    ☐ Review all access modifiers and make them core strict.
+    ☐ Add null checks for arguments.
+
 HTTP/2:
+    ☐ Read RFC 7540 & create subsections for this TODO section.
