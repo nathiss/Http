@@ -6,8 +6,8 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
-using Http.StatusCode;
-using Http.Version;
+using Http.Common.StatusCode;
+using Http.Common.Version;
 
 namespace Http.Http11
 {

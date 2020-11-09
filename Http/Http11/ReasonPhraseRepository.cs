@@ -7,7 +7,7 @@
 #endregion
 
 using System.Collections.Generic;
-using Http.StatusCode;
+using Http.Common.StatusCode;
 
 namespace Http.Http11
 {

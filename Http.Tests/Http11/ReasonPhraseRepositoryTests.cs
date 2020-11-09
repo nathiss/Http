@@ -7,7 +7,7 @@
 #endregion
 
 using Http.Http11;
-using Http.StatusCode;
+using Http.Common.StatusCode;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Http.Tests.Http11

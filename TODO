@@ -31,7 +31,7 @@ General:
             ✔ Implement field-name normalization for header-fields. @started(20-08-06 19:39) @done(20-08-06 20:53) @lasted(1h14m6s)
 
         Message Body:
-            ☐ Read RFC 7230 (section 3.3 - Message Body) and define TODOs. @started(20-08-09 16:33)
+            ☐ Read RFC 7230 (section 3.3 - Message Body) and define TODOs. @started(20-11-09 10:17)
 
         ☐ Create IRequest interface for representing a HTTP request and create an implementation of it.
         ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
@@ -42,6 +42,6 @@ HTTP/1.1:
             ☐ Implement the parser for parsing an HTTP Request into an object of type IRequest.
 
         HTTP Response:
-            ☐ Implement the builder for building HTTP Responses from the objects of type IResponse.
+            ☐ Implement the serializer for building HTTP Responses from the objects of type IResponse.
 
 HTTP/2:

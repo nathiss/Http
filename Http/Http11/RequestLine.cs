@@ -6,8 +6,8 @@
 // See LICENSE.txt file in the project root for full license information.
 #endregion
 
-using Http.Method;
-using Http.Version;
+using Http.Common.Method;
+using Http.Common.Version;
 using Uri;
 
 namespace Http.Http11
