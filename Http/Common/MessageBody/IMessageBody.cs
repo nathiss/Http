@@ -17,6 +17,15 @@ namespace Http.Common.MessageBody
     public interface IMessageBody
     {
         /// <summary>
+        /// This property returns the length of the message body.
+        /// </summary>
+        /// <value>
+        /// This property returns the length of the message body. If the message body has not been set, then this
+        /// property returns 0.
+        /// </value>
+        int Count { get; }
+
+        /// <summary>
         /// This method returns the content of the message body represented as a sequence of bytes.
         /// </summary>
         /// <returns>

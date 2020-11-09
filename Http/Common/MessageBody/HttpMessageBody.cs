@@ -76,13 +76,7 @@ namespace Http.Common.MessageBody
             _content = new List<byte>(byteArray);
         }
 
-        /// <summary>
-        /// This property returns the length of the message body.
-        /// </summary>
-        /// <value>
-        /// This property returns the length of the message body. If the message body has not been set, then this
-        /// property returns 0.
-        /// </value>
+        /// <inheritdoc />
         public int Count
         {
             get => _content?.Count ?? 0;
