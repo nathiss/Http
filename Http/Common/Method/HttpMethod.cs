@@ -14,6 +14,11 @@ namespace Http.Common.Method
     public class HttpMethod
     {
         /// <summary>
+        /// This is the maximum length a method can have in bytes.
+        /// </summary>
+        public const int MaxLength = 7;
+
+        /// <summary>
         /// This property holds the value which identifies the HTTP method represented by this instance.
         /// </summary>
         public HttpMethodType Type { get; }
