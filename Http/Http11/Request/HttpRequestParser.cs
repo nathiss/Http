@@ -308,7 +308,7 @@ namespace Http.Http11.Request
                     _headersStatus = ParserStatus.Error;
                     throw;
                 }
-
+                endOfHeader = _data.FindIndex(b => b == 0x0A);  // "\n"
             }
         }
 
@@ -341,7 +341,14 @@ namespace Http.Http11.Request
             //"[..] optional leading whitespace, the field value, and optional trailing whitespace."
             var fieldValue = Encoding.ASCII.GetString(_headerBytes.ToArray()).Trim();
 
-            _requestBuilder.SetHeader(fieldName, fieldValue);
+            try
+            {
+                _requestBuilder.SetHeader(fieldName, fieldValue);
+            }
+            catch (ArgumentException e)
+            {
+                throw new HttpRequestParserException(e.Message);
+            }
         }
 
         /// <summary>
