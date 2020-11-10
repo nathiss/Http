@@ -174,5 +174,54 @@ namespace Http.Tests.Common.Headers
             // Assert
             Assert.AreEqual(normalizedFieldName, headers.ToList()[^1].Name);
         }
+
+        [TestMethod]
+        public void HasHeader_HeaderDoesNotExist_ReturnsFalse()
+        {
+            Assert.IsFalse(headers.HasHeader("Keep-Alive"));
+        }
+
+        [TestMethod]
+        public void HasHeader_HeaderExists_ReturnsTrue()
+        {
+            // Arrange
+            headers["Keep-Alive"] = "True";
+
+            // Assert
+            Assert.IsTrue(headers.HasHeader("Keep-Alive"));
+        }
+
+        [TestMethod]
+        public void HasHeader_HeaderAddedWithWrongCase_ReturnsTrue()
+        {
+            // Arrange
+            headers["keep-alive"] = "True";
+
+            // Assert
+            Assert.IsTrue(headers.HasHeader("Keep-Alive"));
+        }
+
+        [TestMethod]
+        public void HasHeader_HeaderRequestedWithWrongCase_ReturnsTrue()
+        {
+            // Arrange
+            headers["Keep-Alive"] = "True";
+
+            // Assert
+            Assert.IsTrue(headers.HasHeader("keep-alive"));
+        }
+
+        [TestMethod]
+        public void Clear_HasHeaderAfterClear_ReturnsFalse()
+        {
+            // Arrange
+            headers["Keep-Alive"] = "True";
+
+            // Act
+            headers.Clear();
+
+            // Assert
+            Assert.IsFalse(headers.HasHeader("Keep-Alive"));
+        }
     }
 }

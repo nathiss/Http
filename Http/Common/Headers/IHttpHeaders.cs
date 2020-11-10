@@ -35,9 +35,25 @@ namespace Http.Common.Headers
         string this[string fieldName] { get; set; }
 
         /// <summary>
+        /// This method returns an indication of whether or not the header exists in this container.
+        /// </summary>
+        /// <param name="fieldName">
+        /// The field-name of the header.
+        /// </param>
+        /// <returns>
+        /// An indication of whether or not the header exists in this container is returned.
+        /// </returns>
+        bool HasHeader(string fieldName);
+
+        /// <summary>
         /// This property returns the amount of headers stored in this collection.
         /// </summary>
         int Count { get; }
+
+        /// <summary>
+        /// This method clears the headers list.
+        /// </summary>
+        void Clear();
 
         /// <summary>
         /// This methods a collection of <see cref="HeaderField" /> each representing one HTTP header-field.

@@ -58,6 +58,19 @@ namespace Http.Common.Headers
         }
 
         /// <inheritdoc />
+        public bool HasHeader(string fieldName)
+        {
+            if (fieldName is null)
+            {
+                throw new ArgumentNullException(nameof(fieldName));
+            }
+
+            return headers.Any(
+                headerField => string.Compare(fieldName, headerField.Name, StringComparison.OrdinalIgnoreCase) == 0
+            );
+        }
+
+        /// <inheritdoc />
         public int Count => headers.Count;
 
         /// <inheritdoc />
@@ -83,6 +96,12 @@ namespace Http.Common.Headers
             return headers.First(
                 headerField => string.Compare(fieldName, headerField.Name, StringComparison.OrdinalIgnoreCase) == 0
             );
+        }
+
+        /// <inheritdoc />
+        public void Clear()
+        {
+            headers.Clear();
         }
 
         /// <summary>
