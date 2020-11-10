@@ -115,8 +115,7 @@ namespace Http.Http11.Request
         }
 
         /// <summary>
-        /// This method analysis the data and updates <see cref="_requestLineStatus" /> and
-        /// <see cref="_endOfRequestLineOffset" />.
+        /// This method analysis the data and updates <see cref="_requestLineStatus" />.
         /// </summary>
         private void UpdateRequestLineStatus()
         {
