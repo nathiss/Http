@@ -140,7 +140,7 @@ namespace Http.Tests.Http11.Request
         }
 
         [TestMethod]
-        public void GetHeader_GetNonExistingHeader_ReturnsNull()
+        public void RequestGetHeader_GetNonExistingHeader_ReturnsNull()
         {
             // Act
             var request = _requestBuilder
@@ -153,6 +153,16 @@ namespace Http.Tests.Http11.Request
 
             // Arrange
             Assert.IsNull(request.GetHeader("NonExistingField"));
+        }
+
+        [TestMethod]
+        public void GetHeader_GetExistingHeader_ReturnsTrue()
+        {
+            // Act
+            _requestBuilder.SetHeader("Host", "example.com");
+
+            // Assert
+            Assert.AreEqual("example.com", _requestBuilder.GetHeader("Host"));
         }
     }
 }

@@ -146,6 +146,20 @@ namespace Http.Http11.Request
         }
 
         /// <summary>
+        /// This method returns the field-value associated with the given <paramref name="fieldName" />.
+        /// </summary>
+        /// <param name="fieldName">
+        /// Field-name of a HTTP header.
+        /// </param>
+        /// <returns>
+        /// The field-value associated with the given <paramref name="fieldName" /> is returned.
+        /// </returns>
+        public string GetHeader(string fieldName)
+        {
+            return _httpHeaders[fieldName];
+        }
+
+        /// <summary>
         /// This method sets the message body of the request.
         /// </summary>
         /// <param name="content">
