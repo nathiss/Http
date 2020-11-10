@@ -58,6 +58,11 @@ namespace Http.Http11.Request
         }
 
         /// <summary>
+        /// This property returns an indication of whether or not the request's method has been set.
+        /// </summary>
+        public bool HasMethod => _httpMethod != null;
+
+        /// <summary>
         /// This method sets the target of the request.
         /// </summary>
         /// <param name="uri">
@@ -74,6 +79,11 @@ namespace Http.Http11.Request
         }
 
         /// <summary>
+        /// This property returns an indication of whether or not the request's target has been set.
+        /// </summary>
+        public bool HasTarget => _target != null;
+
+        /// <summary>
         /// This method sets the HTTP version of the request.
         /// </summary>
         /// <param name="httpVersionType">
@@ -87,6 +97,11 @@ namespace Http.Http11.Request
             _httpVersion = _httpVersionRepository.GetHttpVersion(httpVersionType);
             return this;
         }
+
+        /// <summary>
+        /// This property returns an indication of whether or not the request's HTTP version has been set.
+        /// </summary>
+        public bool HasHttpVersion => _httpVersion != null;
 
         /// <summary>
         /// This method sets a HTTP header to the given value.
@@ -109,6 +124,25 @@ namespace Http.Http11.Request
 
             _httpHeaders[fieldName] = fieldValue;
             return this;
+        }
+
+        /// <summary>
+        /// This method returns an indication of whether or not the header exists in the headers container.
+        /// </summary>
+        /// <param name="fieldName">
+        /// The field-name of the header.
+        /// </param>
+        /// <returns>
+        /// An indication of whether or not the header exists in the headers container is returned.
+        /// </returns>
+        public bool HasHeader(string fieldName)
+        {
+            if (fieldName is null)
+            {
+                throw new ArgumentNullException(nameof(fieldName));
+            }
+
+            return _httpHeaders.HasHeader(fieldName);
         }
 
         /// <summary>
@@ -147,6 +181,23 @@ namespace Http.Http11.Request
 
             _httpMessageBody.SetContent(content, encoding);
             return this;
+        }
+
+        /// <summary>
+        /// This property returns an indication of whether or not the request's message body has been set.
+        /// </summary>
+        public bool HasBody => _httpMessageBody.HasBody;
+
+        /// <summary>
+        /// This method clears the request builder, so it can be used to build a new request.
+        /// </summary>
+        public void Clear()
+        {
+            _httpHeaders.Clear();
+            _httpMethod = null;
+            _target = null;
+            _httpVersion = null;
+            _httpMessageBody = new HttpMessageBody();
         }
 
         /// <summary>
@@ -214,6 +265,6 @@ namespace Http.Http11.Request
         /// <summary>
         /// This field contains the message body of the request.
         /// </summary>
-        private readonly HttpMessageBody _httpMessageBody = new HttpMessageBody();
+        private HttpMessageBody _httpMessageBody = new HttpMessageBody();
     }
 }
