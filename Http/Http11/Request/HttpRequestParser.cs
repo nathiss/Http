@@ -70,6 +70,11 @@ namespace Http.Http11.Request
         /// <inheritdoc />
         public void FeedData(IList<byte> data)
         {
+            if (data is null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
             _data.AddRange(data);
             UpdateStatus();
         }

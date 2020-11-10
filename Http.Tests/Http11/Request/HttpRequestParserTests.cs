@@ -369,5 +369,11 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void FeedData_GivenNull_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => _requestParser.FeedData(null));
+        }
     }
 }
