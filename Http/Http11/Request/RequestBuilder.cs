@@ -117,11 +117,6 @@ namespace Http.Http11.Request
         /// </returns>
         public RequestBuilder SetHeader(string fieldName, string fieldValue)
         {
-            if (fieldName is null)
-            {
-                throw new ArgumentNullException(nameof(fieldName));
-            }
-
             _httpHeaders[fieldName] = fieldValue;
             return this;
         }
