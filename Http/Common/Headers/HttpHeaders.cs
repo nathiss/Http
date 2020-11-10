@@ -22,9 +22,11 @@ namespace Http.Common.Headers
         {
             get
             {
-                if (fieldName is null)
+                if (string.IsNullOrWhiteSpace(fieldName))
                 {
-                    throw new ArgumentNullException(nameof(fieldName));
+                    throw new ArgumentException(
+                        $"{nameof(fieldName)} cannot be null or whitespace.", nameof(fieldName)
+                    );
                 }
 
                 try
@@ -38,10 +40,13 @@ namespace Http.Common.Headers
             }
             set
             {
-                if (fieldName is null)
+                if (string.IsNullOrWhiteSpace(fieldName))
                 {
-                    throw new ArgumentNullException(nameof(fieldName));
+                    throw new ArgumentException(
+                        $"{nameof(fieldName)} cannot be null or whitespace.", nameof(fieldName)
+                    );
                 }
+
                 // TODO: add support for special case of 'Set-Cookie' header-field, which can apprear multiple times in
                 // the header section.
                 try
