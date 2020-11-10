@@ -31,15 +31,19 @@ General:
             ✔ Implement field-name normalization for header-fields. @started(20-08-06 19:39) @done(20-08-06 20:53) @lasted(1h14m6s)
 
         Message Body:
-            ☐ Read RFC 7230 (section 3.3 - Message Body) and define TODOs. @started(20-11-09 10:17)
+            ✘ Read RFC 7230 (section 3.3 - Message Body) and define TODOs. @started(20-11-09 10:17) @cancelled(20-11-09 19:27) @wasted(9h10m59s)
+                Need to read it when implementing the logic of processing a request.
             ✔ Create IMessageBody interface & barebone implementation of it. @started(20-11-09 11:02) @done(20-11-09 11:55) @lasted(53m36s)
             ✔ Create unit tests for MessageBody & the implementation of the class. @started(20-11-09 11:45) @done(20-11-09 11:55) @lasted(10m37s)
+
+    ☐ Add HostBuilder & appsettings.json.
+    ☐ Add Logger to the system.
 
 HTTP/1.1:
     HTTP Message:
         HTTP Request:
             ✔ Create IRequest interface for representing a HTTP request and create an implementation of it. @started(20-11-09 14:07) @done(20-11-09 18:39) @lasted(4h32m16s)
-            ☐ Implement the parser for parsing an HTTP Request into an object of type IRequest.
+            ☐ Implement the parser for parsing an HTTP Request into an object of type IRequest. @started(20-11-09 19:41)
 
             HTTP Response:
             ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
