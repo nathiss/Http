@@ -100,7 +100,7 @@ namespace Http.Common.MessageBody
         }
 
         /// <inheritdoc />
-        public bool HasBody => _content == null;
+        public bool HasBody => _content != null;
 
         /// <inheritdoc />
         public int Count

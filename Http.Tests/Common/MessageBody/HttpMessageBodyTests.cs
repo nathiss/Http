@@ -194,5 +194,28 @@ namespace Http.Tests.Common.MessageBody
             content.AddRange(content);
             CollectionAssert.AreEqual(content, messageBody.GetContent());
         }
+
+        [TestMethod]
+        public void HasBody_NoBody_ReturnsFalse()
+        {
+            // Arrange
+            var messageBody = new HttpMessageBody();
+
+            // Assert
+            Assert.IsFalse(messageBody.HasBody);
+        }
+
+        [TestMethod]
+        public void HasBody_AddBody_ReturnsTrue()
+        {
+            // Arrange
+            var messageBody = new HttpMessageBody();
+
+            // Act
+            messageBody.SetContent("AAA");
+
+            // Assert
+            Assert.IsTrue(messageBody.HasBody);
+        }
     }
 }
