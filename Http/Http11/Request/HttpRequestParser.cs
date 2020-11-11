@@ -28,6 +28,13 @@ namespace Http.Http11.Request
         public const int MaxRequestLineLength = 8000;
 
         /// <summary>
+        /// This constant defines the hard limit of the length of the message body. Since the Standard does not
+        /// predefine any limit, this value is a magic number.
+        /// </summary>
+        /// <seealso href="https://tools.ietf.org/html/rfc7230#section-3.3.2">RFC 7230 (Section 3.3.2)</seealso>
+        public const int MaxMessageBodyLength = 4 * 1024 * 1024;
+
+        /// <summary>
         /// This constructor uses <see cref="Clear" /> method to set up all fields & properties.
         /// </summary>
         public HttpRequestParser(RequestBuilder requestBuilder)
@@ -89,6 +96,7 @@ namespace Http.Http11.Request
             _requestLineStatus = ParserStatus.Empty;
             _headersStatus = ParserStatus.Empty;
             _messageBodyStatus = ParserStatus.Empty;
+            _messageBodyLength = -1;
         }
 
         /// <summary>
@@ -365,15 +373,62 @@ namespace Http.Http11.Request
                 return;
             }
 
-            if (_requestBuilder.HasHeader("Content-Length") == false &&
-                _requestBuilder.HasHeader("Transfer-Encoding") == false)
+            try
             {
-                _messageBodyStatus = ParserStatus.Ready;
-                return;
+                if (_messageBodyLength == -1 && _requestBuilder.HasHeader("Content-Length"))
+                {
+                    var contentLengthStr = _requestBuilder.GetHeader("Content-Length");
+                    if (int.TryParse(contentLengthStr, out int contentLengthValue))
+                    {
+                        if(contentLengthValue < 0)
+                        {
+                            throw new HttpRequestParserException("Content-Length must be a positive integer.");
+                        }
+                        if (contentLengthValue > MaxMessageBodyLength)
+                        {
+                            throw new HttpRequestParserException(
+                                $"Content-Length cannot be larger than {MaxMessageBodyLength} bytes."
+                            );
+                        }
+
+                        _messageBodyLength = contentLengthValue;
+
+                        if (_messageBodyLength == 0)
+                        {
+                            _messageBodyStatus = ParserStatus.Ready;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        throw new HttpRequestParserException("Content-Length must be a valid number.");
+                    }
+                }
+
+                if (_messageBodyLength >= 0)
+                {
+                    if (_data.Count < _messageBodyLength)
+                    {
+                        _messageBodyStatus = ParserStatus.Unsatisfied;
+                        return;
+                    }
+
+                    _requestBuilder.SetBody(_data.GetRange(0, _messageBodyLength));
+                    _data.RemoveRange(0, _messageBodyLength);
+                }
+
+                if (_requestBuilder.HasHeader("Transfer-Encoding"))
+                {
+                    throw new NotImplementedException("Not yet implemented");
+                }
+            }
+            catch (HttpRequestParserException)
+            {
+                _messageBodyStatus = ParserStatus.Error;
+                throw;
             }
 
-            // TODO: add support for message body
-            throw new NotImplementedException("Not yet implemented");
+            _messageBodyStatus = ParserStatus.Ready;
         }
 
         /// <summary>
@@ -410,5 +465,10 @@ namespace Http.Http11.Request
         /// This field contains the status of the message body.
         /// </summary>
         private ParserStatus _messageBodyStatus;
+
+        /// <summary>
+        /// This field contains cached Content-Length used to determin the length of message body.
+        /// </summary>
+        private int _messageBodyLength;
     }
 }

@@ -375,5 +375,171 @@ namespace Http.Tests.Http11.Request
         {
             Assert.ThrowsException<ArgumentNullException>(() => _requestParser.FeedData(null));
         }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthZeroAndFullMessage_ReturnsReady()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthNotZeroAndFullMessage_ReturnsReady()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "\r\nHello World!";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthNotZeroAndNotFullMessage_ReturnsUnsatisfied()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "\r\nHello";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Unsatisfied, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthNotZeroAndNotFullMessageAndThenTheRemainingData_ReturnsReady()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "\r\nHello";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            const string strRestOfData = " World!";
+            var restOfData = new List<byte>(Encoding.ASCII.GetBytes(strRestOfData));
+
+            // Act
+            _requestParser.FeedData(restOfData);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthNotZeroAndNotFullMessageAndSomeData_ReturnsReady()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "\r\nHello World!AAAAAAAAAAAAA";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthNotZeroAndNoData_ReturnsUnsatisfied()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Unsatisfied, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthTooBig_ReturnsError()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 4194305\r\n" +  // 4194304 + 1 (4MB + 1)
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthAtMaximum_ReturnsUnsatisfied()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 4194304\r\n" +  // 4194304 (4MB)
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Unsatisfied, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenContentLengthIsLessThanZero_ReturnsError()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: -1337\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
     }
 }
