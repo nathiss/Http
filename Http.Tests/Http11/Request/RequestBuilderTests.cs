@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Http.Common.Headers;
 using Http.Common.Method;
@@ -163,6 +164,16 @@ namespace Http.Tests.Http11.Request
 
             // Assert
             Assert.AreEqual("example.com", _requestBuilder.GetHeader("Host"));
+        }
+
+        [TestMethod]
+        public void AddBodyChunk_GivenSomeData_HasBodyReturnsTrue()
+        {
+            // Act
+            _requestBuilder.AddBodyChunk(new List<byte> { 0x41 });
+
+            // Assert
+            Assert.IsTrue(_requestBuilder.HasBody);
         }
     }
 }

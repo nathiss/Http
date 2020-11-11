@@ -174,6 +174,12 @@ namespace Http.Http11.Request
             return this;
         }
 
+        public RequestBuilder AddBodyChunk(List<byte> content)
+        {
+            _httpMessageBody.AddContentChunk(content);
+            return this;
+        }
+
         /// <summary>
         /// This method sets the message body of the request.
         /// </summary>
