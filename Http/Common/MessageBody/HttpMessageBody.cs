@@ -29,6 +29,29 @@ namespace Http.Common.MessageBody
         }
 
         /// <summary>
+        /// This method appends the given <paramref name="content" /> at the end of message body.
+        /// </summary>
+        /// <param name="content">
+        /// Additional content of message body.
+        /// </param>
+        public void AddContentChunk(List<byte> content)
+        {
+            if (content is null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            if (_content is null)
+            {
+                _content = content;
+            }
+            else
+            {
+                _content.AddRange(content);
+            }
+        }
+
+        /// <summary>
         /// This method sets the message body to the given <paramref name="content" />, serialized to byte sequence
         /// using the default encoding.
         /// </summary>

@@ -154,5 +154,45 @@ namespace Http.Tests.Common.MessageBody
             // Act & Assert
             Assert.ThrowsException<ArgumentNullException>(() => messageBody.GetContentString(null));
         }
+
+        [TestMethod]
+        public void AddContentChunk_GivenNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            var messageBody = new HttpMessageBody();
+
+            // Act & Assert
+            Assert.ThrowsException<ArgumentNullException>(() => messageBody.AddContentChunk(null));
+        }
+
+        [TestMethod]
+        public void AddContentChunk_EmptyMessageBodyAndGivenSomeData_ContentIsTheSame()
+        {
+            // Arrange
+            var messageBody = new HttpMessageBody();
+            var content = new List<byte>{ 0x41, 0x41, 0x41, 0x41 };
+
+            // Act
+            messageBody.AddContentChunk(content);
+
+            // Assert
+            CollectionAssert.AreEqual(content, messageBody.GetContent());
+        }
+
+        [TestMethod]
+        public void AddContentChunk_AddTwoChunks_GetContentReturnsCombinedContent()
+        {
+            // Arrange
+            var messageBody = new HttpMessageBody();
+            var content = new List<byte>{ 0x41, 0x41, 0x41, 0x41 };
+            messageBody.AddContentChunk(content);
+
+            // Act
+            messageBody.AddContentChunk(content);
+
+            // Assert
+            content.AddRange(content);
+            CollectionAssert.AreEqual(content, messageBody.GetContent());
+        }
     }
 }
