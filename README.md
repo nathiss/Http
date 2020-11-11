@@ -1,7 +1,5 @@
 # Http
 
-[![Build Status](https://travis-ci.com/nathiss/Http.svg?branch=master)](https://travis-ci.com/nathiss/Http)
-
 This repository contains the Http project. The Http project contains an implementation of HTTP/1.1 defined by
 
 * [RFC 7230 - Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing](https://tools.ietf.org/html/rfc7230);
