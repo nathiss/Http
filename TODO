@@ -44,6 +44,10 @@ HTTP/1.1:
         HTTP Request:
             ✔ Create IRequest interface for representing a HTTP request and create an implementation of it. @started(20-11-09 14:07) @done(20-11-09 18:39) @lasted(4h32m16s)
             ☐ Implement the parser for parsing an HTTP Request into an object of type IRequest. @started(20-11-09 19:41)
+                ☐ Change chunk-size to accept HEXDIGITS.
+                ☐ Add support for chunk-exts.
+                ☐ Add support for trailer-part.
+            ☐ Add a `Payload` property to `IMessageBody` to be able to convert message body into payload body.
 
             HTTP Response:
             ☐ Create IResponse interface for representing a HTTP respone and create an implementation of it.
