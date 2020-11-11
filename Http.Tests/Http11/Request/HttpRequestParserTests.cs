@@ -600,5 +600,49 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void FeedData_GivenMaximumAmountOfHeaderFields_ReturnsReady()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            for (var i = 0; i < 500; i++)
+            {
+                data.AddRange(Encoding.ASCII.GetBytes($"Name-{i}: Value-{i}\r\n"));
+            }
+
+            data.Add(0x0D);
+            data.Add(0x0A);
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenTooManyHeaderFields_ReturnsError()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            for (var i = 0; i < 501; i++)
+            {
+                data.AddRange(Encoding.ASCII.GetBytes($"Name-{i}: Value-{i}\r\n"));
+            }
+
+            data.Add(0x0D);
+            data.Add(0x0A);
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
     }
 }

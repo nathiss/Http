@@ -35,6 +35,13 @@ namespace Http.Http11.Request
         public const int MaxHeaderFieldLength = 8000;
 
         /// <summary>
+        /// This contant defines the hard limit of the amount of header-fields that can be present in a single request.
+        /// The specification does not define any limit of the length of a header-field, so treat this value as magic
+        /// number.
+        /// </summary>
+        public const int MaxHeaderFieldsCount = 500;
+
+        /// <summary>
         /// This constant defines the hard limit of the length of the message body in bytes. Since the Standard does not
         /// predefine any limit, this value is a magic number.
         /// </summary>
@@ -303,6 +310,11 @@ namespace Http.Http11.Request
                     if (endOfHeader == 0)
                     {
                         throw new HttpRequestParserException("Invalid character in a HTTP header.");
+                    }
+
+                    if (_requestBuilder.HeadersCount > MaxHeaderFieldsCount)
+                    {
+                        throw new HttpRequestParserException("Maximum amount of header-fields has been reached.");
                     }
 
                     if (endOfHeader >= MaxHeaderFieldLength)
