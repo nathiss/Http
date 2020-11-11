@@ -32,6 +32,14 @@ namespace Http.Common.Headers
         /// <exception type="UnknownHeaderFieldException">
         /// An exception of this type is thrown then the user tried to get a field-value of non-existing header-field.
         /// </exception>
+        /// <remarks>
+        /// It not possible to set multiple headers with the same field-name. Setting the second field will result in
+        /// overwritting of the first one. As mentioned in
+        /// <see href="https://tools.ietf.org/html/rfc7230#section-3.2.2">RFC 7230 (Section 3.2.2)</see> "Set-Cookie"
+        /// header is well-known exception, altough this library does not support it. Thus any server using this library
+        /// must combine "Set-Cookie" headers in order to set this header-field.
+        /// </remarks>
+        /// <seealso href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#Syntax" />
         string this[string fieldName] { get; set; }
 
         /// <summary>

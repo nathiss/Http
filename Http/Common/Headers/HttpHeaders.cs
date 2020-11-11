@@ -47,8 +47,6 @@ namespace Http.Common.Headers
                     );
                 }
 
-                // TODO: add support for special case of 'Set-Cookie' header-field, which can apprear multiple times in
-                // the header section.
                 try
                 {
                     var header = GetHeaderFieldByName(fieldName);
