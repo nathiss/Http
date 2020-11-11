@@ -560,5 +560,45 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void FeedData_GivenHeaderFieldWithMaximumLength_ReturnsReady()
+        {
+            // Arrange
+            const string strBeninningOfData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: ";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strBeninningOfData));
+            _requestParser.FeedData(data);
+
+            data = Enumerable.Repeat<byte>(0x41, 8000 - "Host: ".Length - "\r\n".Length).ToList();
+            data.AddRange(new List<byte> { 0x0D, 0x0A, 0x0D, 0x0A });
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenHeaderFieldTooLong_ReturnsError()
+        {
+            // Arrange
+            const string strBeninningOfData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: ";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strBeninningOfData));
+            _requestParser.FeedData(data);
+
+            data = Enumerable.Repeat<byte>(0x41, 8001 - "Host: ".Length - "\r\n".Length).ToList();
+            data.AddRange(new List<byte> { 0x0D, 0x0A, 0x0D, 0x0A });
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
     }
 }

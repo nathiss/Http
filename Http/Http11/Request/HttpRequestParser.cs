@@ -22,13 +22,20 @@ namespace Http.Http11.Request
     public class HttpRequestParser : IRequestParser
     {
         /// <summary>
-        /// This constant defines the hard limit of the length of request line.
+        /// This constant defines the hard limit of the length of request line in bytes.
         /// </summary>
         /// <seealso href="https://tools.ietf.org/html/rfc7230#section-3.1.1">RFC 7230 (Section 3.1.1)</seealso>
         public const int MaxRequestLineLength = 8000;
 
         /// <summary>
-        /// This constant defines the hard limit of the length of the message body. Since the Standard does not
+        /// This contant defines the hard limit of the length of a single header-field in bytes. The specification does
+        /// not define any limit of the length of a header-field, so this library is using the same value as for
+        /// <see cref="MaxRequestLineLength" />.
+        /// </summary>
+        public const int MaxHeaderFieldLength = 8000;
+
+        /// <summary>
+        /// This constant defines the hard limit of the length of the message body in bytes. Since the Standard does not
         /// predefine any limit, this value is a magic number.
         /// </summary>
         /// <seealso href="https://tools.ietf.org/html/rfc7230#section-3.3.2">RFC 7230 (Section 3.3.2)</seealso>
@@ -296,6 +303,11 @@ namespace Http.Http11.Request
                     if (endOfHeader == 0)
                     {
                         throw new HttpRequestParserException("Invalid character in a HTTP header.");
+                    }
+
+                    if (endOfHeader >= MaxHeaderFieldLength)
+                    {
+                        throw new HttpRequestParserException("Maximum length of a header-field has been exceeded.");
                     }
 
                     if (_data[endOfHeader - 1] != 0x0D)  // "\r"
