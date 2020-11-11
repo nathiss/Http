@@ -355,7 +355,17 @@ namespace Http.Http11.Request
 
             try
             {
+                if (_requestBuilder.HasHeader(fieldName))
+                {
+                    throw new HttpRequestParserException(
+                        $"Header with field-name {fieldName} has already been defined."
+                    );
+                }
                 _requestBuilder.SetHeader(fieldName, fieldValue);
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new HttpRequestParserException(e.Message);
             }
             catch (ArgumentException e)
             {

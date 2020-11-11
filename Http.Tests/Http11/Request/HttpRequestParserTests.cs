@@ -541,5 +541,24 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void FeedData_GivenTheSameHeaderTwice_ReturnsError()
+        {
+            // Arrange
+            const string strData =
+                "GET /index.html HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Host: www.example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "\r\nHello World!";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
     }
 }
