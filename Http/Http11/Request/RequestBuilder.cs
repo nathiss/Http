@@ -155,6 +155,11 @@ namespace Http.Http11.Request
         }
 
         /// <summary>
+        /// This property returns the current amount of headers stored in the headers container.
+        /// </summary>
+        public int HeadersCount => _httpHeaders.Count;
+
+        /// <summary>
         /// This method sets the message body of the request.
         /// </summary>
         /// <param name="content">
