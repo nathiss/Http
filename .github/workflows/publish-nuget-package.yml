@@ -39,6 +39,8 @@ jobs:
       run: dotnet restore ./Http
     - name: Build a Release version
       run: dotnet build --configuration Release --no-restore ./Http
+    - name: Run tests
+      run: dotnet test --configuration Release --no-restore --no-build ./Http.Tests
     - name: Pack
       run: dotnet pack --configuration Release -o out ./Http --no-restore --no-build
     - name: Publish
