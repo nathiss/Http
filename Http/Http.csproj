@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <PackageId>Nathiss.Http</PackageId>
-        <Version>1.0.5</Version>
+        <Version>1.0.6</Version>
         <PackageTags>HTTP;HTTP/1.1;HTTP/2;Hypertext Transfer Protocol</PackageTags>
         <Authors>Kamil Rusin</Authors>
         <Company>Kamil Rusin</Company>
