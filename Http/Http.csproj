@@ -3,13 +3,13 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <PackageId>Nathiss.Http</PackageId>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <PackageTags>HTTP;HTTP/1.1;HTTP/2;Hypertext Transfer Protocol</PackageTags>
         <Authors>Kamil Rusin</Authors>
         <Company>Kamil Rusin</Company>
         <Product>Hypertext Transfer Protocol</Product>
         <NeutralLanguage>en-US</NeutralLanguage>
-        <Copyright>Copyright © Kamil Rusin 2020</Copyright>
+        <Copyright>Copyright &#169; Kamil Rusin 2020</Copyright>
         <PackageDescription>Http is a library that alows to parse and generate HTTP requests &amp; responses.</PackageDescription>
         <Summary>Http is a library that alows to parse and generate HTTP requests &amp; responses.</Summary>
         <Title>Hypertext Transfer Protocol</Title>
