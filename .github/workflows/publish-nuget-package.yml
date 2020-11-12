@@ -1,0 +1,52 @@
+name: Publish NuGet package
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    name: build, pack & publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1
+
+    - name: Setup Python3
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3'
+        architecture: 'x64'
+
+    - name: Update version
+      run: python .github/scripts/auto-increment-version.py
+
+    - name: Commit version change
+      run: |
+        source .env
+        git config user.name "Kamil Rusin"
+        git config user.email "kamil.jakub.rusin@gmail.com"
+        git add **/*.csproj
+        git commit -m "Update version to ${HTTP_VERSION}"
+        git tag -a ${HTTP_VERSION} -m "v${HTTP_VERSION}"
+
+    - name: Install dependencies
+      run: dotnet restore ./Http
+    - name: Build a Release version
+      run: dotnet build --configuration Release --no-restore ./Http
+    - name: Pack
+      run: dotnet pack --configuration Release -o out ./Http --no-restore --no-build
+    - name: Publish
+      run: dotnet nuget push out/*.nupkg --api-key ${GITHUB_TOKEN} --source https://api.nuget.org/v3/index.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.HTTP_NUGET_KEY }}
+
+    - name: Push commit & tag
+      run: |
+        git push origin
+        git push origin --tags
