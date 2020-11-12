@@ -9,7 +9,7 @@
         <Company>Kamil Rusin</Company>
         <Product>Hypertext Transfer Protocol</Product>
         <NeutralLanguage>en-US</NeutralLanguage>
-        <Copyright>Copyright &#169; Kamil Rusin 2020</Copyright>
+        <Copyright>Copyright © Kamil Rusin 2020</Copyright>
         <PackageDescription>Http is a library that alows to parse and generate HTTP requests &amp; responses.</PackageDescription>
         <Summary>Http is a library that alows to parse and generate HTTP requests &amp; responses.</Summary>
         <Title>Hypertext Transfer Protocol</Title>
@@ -20,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Nathiss.Uri" Version="1.0" />
+        <PackageReference Include="Nathiss.Uri" Version="1.0.4" />
     </ItemGroup>
 
     <ItemGroup>
