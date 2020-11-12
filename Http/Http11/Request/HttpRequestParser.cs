@@ -42,11 +42,17 @@ namespace Http.Http11.Request
         public const int MaxHeaderFieldsCount = 500;
 
         /// <summary>
-        /// This constant defines the hard limit of the length of the message body in bytes. Since the Standard does not
+        /// This constant defines the hard limit of the length of the message body in bytes. Since the standard does not
         /// predefine any limit, this value is a magic number.
         /// </summary>
         /// <seealso href="https://tools.ietf.org/html/rfc7230#section-3.3.2">RFC 7230 (Section 3.3.2)</seealso>
         public const int MaxMessageBodyLength = 4 * 1024 * 1024;
+
+        /// <summary>
+        /// This contant defines the hard limit of the length of a single chunk in bytes. Since the standard does not
+        /// predefine any limit, this value is a magic number.
+        /// </summary>
+        public const int MaxChunkLength = 4 * 1024 * 1024;
 
         /// <summary>
         /// This constructor uses <see cref="Clear" /> method to set up all fields & properties.
@@ -109,8 +115,12 @@ namespace Http.Http11.Request
             _requestBuilder.Clear();
             _requestLineStatus = ParserStatus.Empty;
             _headersStatus = ParserStatus.Empty;
+            _transferEncodings?.Clear();
             _messageBodyStatus = ParserStatus.Empty;
             _messageBodyLength = -1;
+            _currentChunkSize = -1;
+            _lastChunkHasBeeReceived = false;
+            _needMoreDataForChunk = true;
         }
 
         /// <summary>
@@ -406,9 +416,35 @@ namespace Http.Http11.Request
             {
                 return;
             }
+            _messageBodyStatus = ParserStatus.Unsatisfied;
 
             try
             {
+                if (IsChunked || _requestBuilder.HasHeader("Transfer-Encoding"))
+                {
+                    if (_requestBuilder.HasHeader("Content-Length"))
+                    {
+                        throw new HttpRequestParserException(
+                            "A request cannot contain both Content-Length and Transfer-Encoding header-fields."
+                        );
+                    }
+
+                    if (_transferEncodings == null || _transferEncodings.Count == 0)
+                    {
+                        ParseTransferEncodings();
+                    }
+                    _needMoreDataForChunk = false;
+
+                    while (_needMoreDataForChunk == false)
+                    {
+                        HandleChunkSize();
+                        HandleChunkData();
+                        HandleChunkedBodyCRLF();
+                    }
+
+                    return;
+                }
+
                 if (_messageBodyLength == -1 && _requestBuilder.HasHeader("Content-Length"))
                 {
                     var contentLengthStr = _requestBuilder.GetHeader("Content-Length");
@@ -450,17 +486,153 @@ namespace Http.Http11.Request
                     _requestBuilder.SetBody(_data.GetRange(0, _messageBodyLength));
                     _data.RemoveRange(0, _messageBodyLength);
                 }
-
-                if (_requestBuilder.HasHeader("Transfer-Encoding"))
-                {
-                    throw new NotImplementedException("Not yet implemented");
-                }
             }
             catch (HttpRequestParserException)
             {
                 _messageBodyStatus = ParserStatus.Error;
                 throw;
             }
+
+            _messageBodyStatus = ParserStatus.Ready;
+        }
+
+        /// <summary>
+        /// This method reads "Transfer-Encoding" header-field and parses its value into
+        /// <see cref="_transferEncodings">a list of strings</see>.
+        /// </summary>
+        private void ParseTransferEncodings()
+        {
+            var transferEncodings = _requestBuilder.GetHeader("Transfer-Encoding")
+                .Split(',')
+                .Select(encoding => encoding.Trim().ToLower())
+                .ToList();
+
+            if (transferEncodings.Count(encoding => encoding == "chunked") != 1)
+            {
+                throw new NotImplementedException("Exactly one transfer-encoding chunked is required.");
+            }
+
+            if (transferEncodings.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new HttpRequestParserException("Transfer-Encoding field-value format is invalid.");
+            }
+
+            if (transferEncodings.Last() != "chunked")
+            {
+                throw new HttpRequestParserException(
+                    "If transfer-encoding chunked is present in the request, then it must be the last encoding."
+                );
+            }
+
+            _transferEncodings = transferEncodings;
+        }
+
+        /// <summary>
+        /// This method reads <see cref="_data" /> and tried to extract a chunk-size.
+        /// </summary>
+        private void HandleChunkSize()
+        {
+            if (_currentChunkSize >= 0 || _lastChunkHasBeeReceived)
+            {
+                // This means that we still need to process the current chunk first or the last chunk has been received
+                // and there will be no more chunk-size.
+                return;
+            }
+
+            var endOfChunkSize = _data.FindIndex(b => b == 0x0A);  // "\n"
+            if (endOfChunkSize == -1)
+            {
+                if (_data.Count > MaxMessageBodyLength)
+                {
+                    throw new HttpRequestParserException($"Message body cannot be longer than {MaxMessageBodyLength}.");
+                }
+
+                // Need more data.
+                _needMoreDataForChunk = true;
+                return;
+            }
+
+            if (_data[endOfChunkSize - 1] != 0x0D)  // "\r"
+            {
+                throw new HttpRequestParserException("A chunk-size must end with a single CRLF.");
+            }
+
+            var chunkSizeBytes = _data.GetRange(0, endOfChunkSize - 1);  // Do not include "\r"
+            _data.RemoveRange(0, endOfChunkSize + 1);  // Remove chunk-size and "\r\n"
+
+            var chunkSizeStr = Encoding.ASCII.GetString(chunkSizeBytes.ToArray());
+            if (int.TryParse(chunkSizeStr, out int chunkSize))
+            {
+                if (chunkSize < 0)
+                {
+                    throw new HttpRequestParserException("Chunk-size must be a positive integer.");
+                }
+
+                if (chunkSize > MaxChunkLength)
+                {
+                    throw new HttpRequestParserException($"Chunk-size cannot be bigger than {MaxChunkLength}.");
+                }
+
+                _currentChunkSize = chunkSize;
+            }
+            else
+            {
+                throw new HttpRequestParserException("Chunk-size must be a valid number.");
+            }
+        }
+
+        /// <summary>
+        /// This method reads <see cref="_data" /> and tries to extract a chunk-data.
+        /// </summary>
+        private void HandleChunkData()
+        {
+            if (_currentChunkSize == -1)
+            {
+                // This means that we still needs to process chunk-size first.
+                return;
+            }
+
+            if (_currentChunkSize == 0)
+            {
+                // Last chunk does not have any data, so there's no CRLF at the end of the chunk-data.
+                _lastChunkHasBeeReceived = true;
+                _currentChunkSize = -1;
+                return;
+            }
+
+            if (_data.Count < _currentChunkSize + 2)  // chunk-data and CRLF
+            {
+                // Need more data.
+                _needMoreDataForChunk = true;
+                return;
+            }
+
+            _requestBuilder.AddBodyChunk(_data.GetRange(0, _currentChunkSize));
+            _data.RemoveRange(0, _currentChunkSize + 2);
+
+            _currentChunkSize = -1;
+        }
+
+        /// <summary>
+        /// This method reads <see cref="_data" /> and tries to extract a CRLF that indicates the end of chunked-body
+        /// message body.
+        /// </summary>
+        private void HandleChunkedBodyCRLF()
+        {
+            if (_lastChunkHasBeeReceived == false)
+            {
+                // We need to receive the last chunk first, before ending CRLF.
+                return;
+            }
+
+            if (_data.Count < 2)  // CRLF
+            {
+                // Need more data.
+                _needMoreDataForChunk = true;
+                return;
+            }
+
+            _data.RemoveRange(0, 2);  // Remove CRLF
 
             _messageBodyStatus = ParserStatus.Ready;
         }
@@ -496,6 +668,12 @@ namespace Http.Http11.Request
         private ParserStatus _headersStatus;
 
         /// <summary>
+        /// This field contains the list of all transfer-encodings that were applied to the payload to form the message
+        /// body.
+        /// </summary>
+        private List<string> _transferEncodings;
+
+        /// <summary>
         /// This field contains the status of the message body.
         /// </summary>
         private ParserStatus _messageBodyStatus;
@@ -504,5 +682,28 @@ namespace Http.Http11.Request
         /// This field contains cached Content-Length used to determin the length of message body.
         /// </summary>
         private int _messageBodyLength;
+
+        /// <summary>
+        /// This property returns an indication of whether or not the chunked transfer-encoding has been applied to
+        /// the message body.
+        /// </summary>
+        private bool IsChunked => _transferEncodings != null && _transferEncodings.Last() == "chunked";
+
+        /// <summary>
+        /// This field contains the size of the current chunk. If a request does not have chunked transfer-encoding
+        /// applied or chunk-size has been processed for the current chunk, then the value of this field is -1.
+        /// </summary>
+        private int _currentChunkSize;
+
+        /// <summary>
+        /// This field contains an indication of whether or not the last-chunk has been received and now we need to
+        /// expect trailer-part and CRLF.
+        /// </summary>
+        private bool _lastChunkHasBeeReceived;
+
+        /// <summary>
+        /// This field contains an indication of whether or not be can continue processing chunks.
+        /// </summary>
+        private bool _needMoreDataForChunk;
     }
 }

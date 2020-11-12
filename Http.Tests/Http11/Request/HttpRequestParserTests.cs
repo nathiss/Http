@@ -644,5 +644,293 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void Status_GivenContentLengthAndTransferEncoding_ReturnsError()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void Status_GivenChunkedAsNotLastTransferEncoding_ReturnsError()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Content-Length: 12\r\n" +
+                "Transfer-Encoding: chunked, gzip\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkedAsLastEncoding_ReturnsUnsatisfied()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: gzip, chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Unsatisfied, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_SetTransferEncodingValueToComaAndChunked_ReturnsError()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: , chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenTransferEncodingValueWithDoubleComa_ReturnsError()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: gzip,, chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenTransferEncodingWithMessageBodylengthZero_ReturnsReady()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenTransferEncodingWithMessageBodylengthMultipleZeros_ReturnsReady()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "000000000000000\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenTransferEncodingMessageWithMissingEndingCRLF_ReturnsUnsatisfied()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "0\r\n" +
+                "";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Unsatisfied, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenTransferEncodingMessageWithMissingEndingCRLFNextFeedCRLF_ReturnsReady()
+        {
+            // Arrange
+            const string strRequestLine = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "0\r\n" +
+                "";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strRequestLine));
+            _requestParser.FeedData(data);
+
+            // Act
+            _requestParser.FeedData(new List<byte> { 0x0D, 0x0A });
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_FirstFeedCompleteHeadersSecondFeedCompleteBody_ReturnsReady()
+        {
+            // Arrange
+            const string strHeaders = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strHeaders));
+            _requestParser.FeedData(data);
+
+            const string strMessageBody = "12\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "\r\n";
+            data = new List<byte>(Encoding.ASCII.GetBytes(strMessageBody));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_ThreeChunksAtTheSameTime_ReturnsReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "8\r\n" +
+                "Hello \r\n\r\n" +
+                "6\r\n" +
+                "World!\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenNegativeChunkSize_ReturnsError()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "-2\r\n" +
+                "\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeWithByteLengthLongerThanMaximumBodySize_ReturnsError()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            data.AddRange(Enumerable.Repeat<byte>(0x31, 4194305));  // "1", 4MB + 1
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeWithValueLargerThanInt32_ReturnsError()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            data.AddRange(Enumerable.Repeat<byte>(0x31, 4194304));  // "1", 4MB
+            data.AddRange(new List<byte> { 0x0D, 0x0A });
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeWithValueLargerMaximumChunkSizeLength_ReturnsError()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            data.AddRange(Enumerable.Repeat<byte>(0x31, 9));  // "1"
+            data.AddRange(new List<byte> { 0x0D, 0x0A });
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
     }
 }
