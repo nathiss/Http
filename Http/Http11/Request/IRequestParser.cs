@@ -43,6 +43,18 @@ namespace Http.Http11.Request
         void FeedData(IList<byte> data);
 
         /// <summary>
+        /// This method returns a new HTTP request that was built from the data.
+        /// </summary>
+        /// <returns>
+        /// A new HTTP request that was built from the data is returned.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// An exception of this type it thrown when the method is called and <see cref="Status" /> is not equal to
+        /// <see cref="ParserStatus.Ready" />.
+        /// </exception>
+        IRequest GetRequest();
+
+        /// <summary>
         /// This method clears the parser from all data and sets the object into its initial state.
         /// </summary>
         void Clear();

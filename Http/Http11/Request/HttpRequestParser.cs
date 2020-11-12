@@ -108,9 +108,43 @@ namespace Http.Http11.Request
         }
 
         /// <inheritdoc />
+        public IRequest GetRequest()
+        {
+            if (Status != ParserStatus.Ready)
+            {
+                throw new InvalidOperationException("Request cannot be built from incomplete/invalid data.");
+            }
+
+            var request = _requestBuilder.Build();
+
+            ClearAfterRequestBuild();
+            UpdateStatus();
+
+            return request;
+        }
+
+        /// <inheritdoc />
         public void Clear()
         {
             _data.Clear();
+            _requestLineBytes?.Clear();
+            _headerBytes?.Clear();
+            _requestBuilder.Clear();
+            _requestLineStatus = ParserStatus.Empty;
+            _headersStatus = ParserStatus.Empty;
+            _transferEncodings?.Clear();
+            _messageBodyStatus = ParserStatus.Empty;
+            _messageBodyLength = -1;
+            _currentChunkSize = -1;
+            _lastChunkReceived = false;
+            _needMoreDataForChunk = true;
+        }
+
+        /// <summary>
+        /// This method clears the parser after q request has been built.
+        /// </summary>
+        private void ClearAfterRequestBuild()
+        {
             _requestLineBytes?.Clear();
             _headerBytes?.Clear();
             _requestBuilder.Clear();
@@ -131,6 +165,12 @@ namespace Http.Http11.Request
         {
             if (Status == ParserStatus.Error || Status == ParserStatus.Ready)
             {
+                return;
+            }
+
+            if (_data.Count == 0)
+            {
+                // If there's no data, then we can just return without analysising it.
                 return;
             }
 

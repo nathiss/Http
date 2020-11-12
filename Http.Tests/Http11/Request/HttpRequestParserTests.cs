@@ -1086,5 +1086,127 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void GetRequest_NoData_ThrownInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() => _requestParser.GetRequest());
+        }
+
+        [TestMethod]
+        public void GetRequest_StatusUnsatisfied_ThrownInvalidOperationException()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act & Assert
+            Assert.ThrowsException<InvalidOperationException>(() => _requestParser.GetRequest());
+        }
+
+        [TestMethod]
+        public void GetRequest_StatusError_ThrownInvalidOperationException()
+        {
+            // Arrange
+            const string strData = "UNKNOWN_METHOD / HTTP/1.1\r\n" +
+                "Host: example.com\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act & Assert
+            Assert.ThrowsException<InvalidOperationException>(() => _requestParser.GetRequest());
+        }
+
+        [TestMethod]
+        public void GetRequest_StatusReady_ReturnsRequest()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act
+            var request = _requestParser.GetRequest();
+
+            // Assert
+            Assert.IsNotNull(request);
+        }
+
+        [TestMethod]
+        public void GetRequest_ReadRequestAndNoDataWasConsumed_StatusEmpty()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act
+            _ = _requestParser.GetRequest();
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Empty, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void GetRequest_ReadRequestAndSomeDataIsPresent_StatusUnsatisfied()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "\r\n" +
+                "POST / HTTP/1.1\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act
+            _ = _requestParser.GetRequest();
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Unsatisfied, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void GetRequest_ReadRequestAndInvalidDataIsPresent_StatusError()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "\r\n" +
+                "UNKNOWN / HTTP/1.1\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act
+            _ = _requestParser.GetRequest();
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void GetRequest_ReadRequestAndAnotherRequestIsReady_StatusReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "\r\n" +
+                "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+            _requestParser.FeedData(data);
+
+            // Act
+            _ = _requestParser.GetRequest();
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
     }
 }

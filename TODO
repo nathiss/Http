@@ -48,7 +48,7 @@ HTTP/1.1:
             ✔ Add support for chunk-exts. @started(20-11-12 14:15) @done(20-11-12 14:21) @lasted(6m10s)
                 We do not support chunk-ext. They are ignored if found.
             ✔ Add support for trailer-part. @started(20-11-12 13:42) @done(20-11-12 14:07) @lasted(25m22s)
-            ☐ Add funtionality to extract `IRequest` from request parser.
+            ✔ Add funtionality to extract `IRequest` from request parser. @started(20-11-12 18:42) @done(20-11-12 18:57) @lasted(15m33s)
             ☐ Add a `Payload` property to `IMessageBody` to be able to convert message body into payload body.
 
             HTTP Response:
