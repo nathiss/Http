@@ -1,6 +1,6 @@
 # Http
 
-![Nuget](https://img.shields.io/nuget/v/Nathiss.Http)
+[![Nuget](https://img.shields.io/nuget/v/Nathiss.Http)](https://www.nuget.org/packages/Nathiss.Http/)
 
 This repository contains the Http project. The Http project contains an implementation of HTTP/1.1 defined by
 
