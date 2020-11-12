@@ -41,12 +41,9 @@ Hypertext Transfer Protocol Version 2 is defined by RFC 7540.
 
 *Here in the future I'll put the design considerations and design description.*
 
-## Notes
+## Known Limitations
 
-This repository was designed to be used as a submodule of [SharpShare](https://github.com/nathiss/SharpShare) repository, thus
-is has external dependencies to other components of *SharpShare* (namely [Uri](https://github.com/nathiss/Uri) but in the future
-possibly also others). If you wish to use this repository standalone or as a dependency to other project you need to change paths
-to the projects that this depends on (see [Http.csproj](Http/Http.csproj)). Take a look at [.travis.yml](.travis.yml) file.
+* This library does not support `chunk-ext`. See [RFC 7230 (Section 4.1.1)](https://tools.ietf.org/html/rfc7230#section-4.1.1).
 
 ## License
 

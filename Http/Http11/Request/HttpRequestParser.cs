@@ -573,7 +573,19 @@ namespace Http.Http11.Request
                 throw new HttpRequestParserException("A chunk-size must end with a single CRLF.");
             }
 
-            var chunkSizeBytes = _data.GetRange(0, endOfChunkSize - 1);  // Do not include "\r"
+            List<byte> chunkSizeBytes;
+
+            var startOfChunkExt = _data.FindIndex(0, endOfChunkSize, b => b == 0x3B);  // ";"
+            if (startOfChunkExt != -1)
+            {
+                // We do not support chunk-ext.
+                chunkSizeBytes = _data.GetRange(0, startOfChunkExt);
+            }
+            else
+            {
+                chunkSizeBytes = _data.GetRange(0, endOfChunkSize - 1);  // Do not include "\r"
+            }
+
             _data.RemoveRange(0, endOfChunkSize + 1);  // Remove chunk-size and "\r\n"
 
             var chunkSizeStr = Encoding.ASCII.GetString(chunkSizeBytes.ToArray());

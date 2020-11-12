@@ -1044,5 +1044,47 @@ namespace Http.Tests.Http11.Request
             Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
             Assert.IsTrue(_requestBuilder.HasHeader("User-Agent"));
         }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeWithChunkExt_ReturnsReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "c;key=value\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeWithTwoChunkExts_ReturnsReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "c;key1=value1;key2=value2\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
     }
 }
