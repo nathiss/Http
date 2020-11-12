@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Http.Common.Method;
@@ -561,7 +562,7 @@ namespace Http.Http11.Request
             _data.RemoveRange(0, endOfChunkSize + 1);  // Remove chunk-size and "\r\n"
 
             var chunkSizeStr = Encoding.ASCII.GetString(chunkSizeBytes.ToArray());
-            if (int.TryParse(chunkSizeStr, out int chunkSize))
+            if (int.TryParse(chunkSizeStr, NumberStyles.HexNumber, null, out int chunkSize))
             {
                 if (chunkSize < 0)
                 {

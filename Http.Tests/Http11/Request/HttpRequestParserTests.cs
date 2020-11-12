@@ -820,7 +820,7 @@ namespace Http.Tests.Http11.Request
             var data = new List<byte>(Encoding.ASCII.GetBytes(strHeaders));
             _requestParser.FeedData(data);
 
-            const string strMessageBody = "12\r\n" +
+            const string strMessageBody = "C\r\n" +
                 "Hello World!\r\n" +
                 "0\r\n" +
                 "\r\n";
@@ -931,6 +931,66 @@ namespace Http.Tests.Http11.Request
 
             // Assert
             Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenEmptyChunkSize_ReturnsError()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Error, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeInHexDigits_ReturnsReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "C\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+        }
+
+        [TestMethod]
+        public void FeedData_GivenChunkSizeInLowerCaseHexDigits_ReturnsReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "c\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
         }
     }
 }
