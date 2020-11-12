@@ -10,8 +10,10 @@
         <Product>Hypertext Transfer Protocol</Product>
         <NeutralLanguage>en-US</NeutralLanguage>
         <Copyright>Copyright &#169; Kamil Rusin 2020</Copyright>
+        <PackageDescription>Http is a library that alows to parse and generate HTTP requests &amp; responses.</PackageDescription>
         <Summary>Http is a library that alows to parse and generate HTTP requests &amp; responses.</Summary>
         <Title>Hypertext Transfer Protocol</Title>
+        <RepositoryUrl>https://github.com/nathiss/Http</RepositoryUrl>
         <PackageProjectUrl>https://github.com/nathiss/Http</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
