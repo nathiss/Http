@@ -33,7 +33,7 @@ namespace Http.Common.Extentions
             {
                 null => throw new ArgumentNullException(nameof(str)),
                 "" => throw new ArgumentException($"{nameof(str)} cannot be empty", nameof(str)),
-                _ => str.First().ToString().ToUpper() + str.Substring(1).ToLower(),
+                _ => str.First().ToString().ToUpper() + str[1..].ToLower(),
             };
         }
     }
