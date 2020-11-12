@@ -8,6 +8,9 @@ trim_trailing_whitespace = true
 [*.{cs,csproj,py}]
 indent_size = 4
 
+[*.csproj]
+end_of_line = lf
+
 [*.md]
 trim_trailing_whitespace = false
 indent_size = 2

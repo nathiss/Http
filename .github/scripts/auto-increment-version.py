@@ -20,4 +20,4 @@ version_tag.text = new_version
 csproj_tree.write(CSPROJ_FILE, encoding='UTF-8')
 
 with open(CSPROJ_FILE, 'a') as f:
-    f.write('')
+    f.write('\n')
