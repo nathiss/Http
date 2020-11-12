@@ -120,7 +120,7 @@ namespace Http.Http11.Request
             _messageBodyStatus = ParserStatus.Empty;
             _messageBodyLength = -1;
             _currentChunkSize = -1;
-            _lastChunkHasBeeReceived = false;
+            _lastChunkReceived = false;
             _needMoreDataForChunk = true;
         }
 
@@ -312,9 +312,24 @@ namespace Http.Http11.Request
             }
             _headersStatus = ParserStatus.Unsatisfied;
 
-            var endOfHeader = _data.FindIndex(b => b == 0x0A);  // "\n"
+            if (HandleHeaders())
+            {
+                _headersStatus = ParserStatus.Ready;
+            }
+        }
 
-            while (endOfHeader != -1)
+        /// <summary>
+        /// This method reads <see cref="_data" /> and tries to extract HTTP header-fields.
+        /// </summary>
+        /// <returns>
+        /// An indication of whether or not all headers has been extracted is returned.
+        /// </returns>
+        private bool HandleHeaders()
+        {
+            for (var endOfHeader = _data.FindIndex(b => b == 0x0A);
+                endOfHeader != -1;
+                endOfHeader = _data.FindIndex(b => b == 0x0A)
+            )
             {
                 try
                 {
@@ -343,9 +358,8 @@ namespace Http.Http11.Request
 
                     if (_headerBytes.Count == 0)
                     {
-                        // Line which contains only CRLF indicates the end of header section.
-                        _headersStatus = ParserStatus.Ready;
-                        return;
+                        // Line which contains only CRLF indicates the end of a header section.
+                        return true;
                     }
 
                     ParseHeader();
@@ -355,8 +369,9 @@ namespace Http.Http11.Request
                     _headersStatus = ParserStatus.Error;
                     throw;
                 }
-                endOfHeader = _data.FindIndex(b => b == 0x0A);  // "\n"
             }
+
+            return false;
         }
 
         /// <summary>
@@ -440,7 +455,7 @@ namespace Http.Http11.Request
                     {
                         HandleChunkSize();
                         HandleChunkData();
-                        HandleChunkedBodyCRLF();
+                        HandleTrailerPart();
                     }
 
                     return;
@@ -533,7 +548,7 @@ namespace Http.Http11.Request
         /// </summary>
         private void HandleChunkSize()
         {
-            if (_currentChunkSize >= 0 || _lastChunkHasBeeReceived)
+            if (_currentChunkSize >= 0 || _lastChunkReceived)
             {
                 // This means that we still need to process the current chunk first or the last chunk has been received
                 // and there will be no more chunk-size.
@@ -596,7 +611,7 @@ namespace Http.Http11.Request
             if (_currentChunkSize == 0)
             {
                 // Last chunk does not have any data, so there's no CRLF at the end of the chunk-data.
-                _lastChunkHasBeeReceived = true;
+                _lastChunkReceived = true;
                 _currentChunkSize = -1;
                 return;
             }
@@ -615,27 +630,22 @@ namespace Http.Http11.Request
         }
 
         /// <summary>
-        /// This method reads <see cref="_data" /> and tries to extract a CRLF that indicates the end of chunked-body
-        /// message body.
+        /// This method reads <see cref="_data" /> and tries to extract trailer-part of a chunked-body.
         /// </summary>
-        private void HandleChunkedBodyCRLF()
+        private void HandleTrailerPart()
         {
-            if (_lastChunkHasBeeReceived == false)
+            if (_lastChunkReceived == false)
             {
-                // We need to receive the last chunk first, before ending CRLF.
+                // We need to receive the last chunk part before trailer-part.
                 return;
             }
 
-            if (_data.Count < 2)  // CRLF
+            if (HandleHeaders())
             {
-                // Need more data.
-                _needMoreDataForChunk = true;
-                return;
+                _messageBodyStatus = ParserStatus.Ready;
             }
 
-            _data.RemoveRange(0, 2);  // Remove CRLF
-
-            _messageBodyStatus = ParserStatus.Ready;
+            _needMoreDataForChunk = true;
         }
 
         /// <summary>
@@ -698,9 +708,9 @@ namespace Http.Http11.Request
 
         /// <summary>
         /// This field contains an indication of whether or not the last-chunk has been received and now we need to
-        /// expect trailer-part and CRLF.
+        /// expect trailer-part.
         /// </summary>
-        private bool _lastChunkHasBeeReceived;
+        private bool _lastChunkReceived;
 
         /// <summary>
         /// This field contains an indication of whether or not be can continue processing chunks.

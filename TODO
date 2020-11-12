@@ -46,7 +46,7 @@ HTTP/1.1:
             ✔ Implement the parser for parsing an HTTP Request into an object of type IRequest. @started(20-11-09 19:41) @done(20-11-12 13:32) @lasted(2d17h51m28s)
             ✔ Change chunk-size to accept HEXDIGITS. @started(20-11-12 13:35) @done(20-11-12 13:40) @lasted(5m17s)
             ☐ Add support for chunk-exts.
-            ☐ Add support for trailer-part.
+            ✔ Add support for trailer-part. @started(20-11-12 13:42) @done(20-11-12 14:07) @lasted(25m22s)
             ☐ Add funtionality to extract `IRequest` from request parser.
             ☐ Add a `Payload` property to `IMessageBody` to be able to convert message body into payload body.
 

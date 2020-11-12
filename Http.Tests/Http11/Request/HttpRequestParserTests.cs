@@ -992,5 +992,57 @@ namespace Http.Tests.Http11.Request
             // Assert
             Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
         }
+
+        [TestMethod]
+        public void FeedData_GivenHeadersInTrailerPart_ReturnsReady()
+        {
+            // Arrange
+            const string strData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "c\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "User-Agent: Fingers v1.0\r\n" +
+                "\r\n";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+            Assert.IsTrue(_requestBuilder.HasHeader("User-Agent"));
+        }
+
+        [TestMethod]
+        public void FeedData_GivenHeadersInTrailerPartInTwoCommits_ReturnsReady()
+        {
+            // Arrange
+            const string strFirstData = "GET / HTTP/1.1\r\n" +
+                "Host: example.com\r\n" +
+                "Transfer-Encoding: chunked\r\n" +
+                "\r\n" +
+                "c\r\n" +
+                "Hello World!\r\n" +
+                "0\r\n" +
+                "User-Agent: Fingers v1.0\r\n" +
+                "\r\n" +
+                "User-Agent: ";
+            var data = new List<byte>(Encoding.ASCII.GetBytes(strFirstData));
+            _requestParser.FeedData(data);
+
+            const string strSecondData = "Fingers v1.0\r\n" +
+                "\r\n";
+            data = new List<byte>(Encoding.ASCII.GetBytes(strSecondData));
+
+            // Act
+            _requestParser.FeedData(data);
+
+            // Assert
+            Assert.AreEqual(ParserStatus.Ready, _requestParser.Status);
+            Assert.IsTrue(_requestBuilder.HasHeader("User-Agent"));
+        }
     }
 }
